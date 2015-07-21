@@ -505,11 +505,6 @@ var BattleshipsClass = function() {
             return false;
         }
 
-        shipsArray = $ships.map(function() {
-            return getCoords(this);
-        }).toArray();
-
-        customLog({ships: shipsArray});
         startGame();
     }
 
@@ -597,6 +592,10 @@ var BattleshipsClass = function() {
         }
     }
 
+    /**
+     * @param {Object} element
+     * @return {Array}
+     */
     function getCoords(element) {
         var index = $battleground.index(element),
             indexes, coordY, coordX, temp;
@@ -609,36 +608,26 @@ var BattleshipsClass = function() {
         coordY = axisY[ indexes[1] ];
         coordX = axisX[ indexes[0] ];
 
-        return coordY + coordX;
+        return [coordY, coordX];
     }
 
     function getFieldByCoords(coords, boardNumber) {
-        var positionY, positionX, position;
-
-        if ($.type(coords) !== 'array') {
-            coords = [coords.substr(0, 1), parseInt(coords.substr(1))];
-        }
-        positionY = $.inArray(coords[0], axisY);
-        positionX = $.inArray(coords[1], axisX);
-
-        // parseInt('08') -> 0
-        position = parseInt([positionX, positionY].join(''), 10) + (boardNumber * 100);
+        var positionY = $.inArray(coords[0], axisY),
+            positionX = $.inArray(coords[1], axisX),
+            // parseInt('08') -> 0
+            position = parseInt([positionX, positionY].join(''), 10) + (boardNumber * 100);
 
         return $battleground.eq(position);
     }
 
     function markShot(boardNumber, coords, type, tendency) {
-        var field, positionY, positionX, markClass, missedCoords, i, tempField;
-
-        if ($.type(coords) !== 'array') {
-            coords = [coords.substr(0, 1), parseInt(coords.substr(1))];
-        }
-
-        field = getFieldByCoords(coords, boardNumber);
-        positionY = $.inArray(coords[0], axisY);
-        positionX = $.inArray(coords[1], axisX);
-        markClass = '';
-        missedCoords = [];
+        var field = getFieldByCoords(coords, boardNumber),
+            positionY = $.inArray(coords[0], axisY),
+            positionX = $.inArray(coords[1], axisX),
+            markClass = '',
+            missedCoords = [],
+            tempField,
+            i;
 
         if (type === null) {
             if (field.hasClass('ship')) {
@@ -693,15 +682,11 @@ var BattleshipsClass = function() {
     }
 
     function isSunk(boardNumber, coords, tendency) {
-        var positionY, positionX, checkCoords, i, tempField;
-
-        // @DRY
-        if ($.type(coords) !== 'array') {
-            coords = [coords.substr(0, 1), parseInt(coords.substr(1))];
-        }
-        positionY = $.inArray(coords[0], axisY);
-        positionX = $.inArray(coords[1], axisX);
-        checkCoords = [];
+        var positionY = $.inArray(coords[0], axisY),
+            positionX = $.inArray(coords[1], axisX),
+            checkCoords = [],
+            tempField,
+            i;
 
         checkCoords.push( (positionY > 0) ? [axisY[ positionY - 1 ], coords[1]] : [] );
         checkCoords.push( (positionY < 9) ? [axisY[ positionY + 1 ], coords[1]] : [] );
