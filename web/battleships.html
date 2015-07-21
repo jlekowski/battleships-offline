@@ -443,6 +443,8 @@ var BattleshipsClass = function() {
     var whose_turn = 0;
     // battle boards
     var $battleground = null;
+    // my sister must always win :)
+    var zosiekMode = false;
 
     this.run = function () {
         $battleground = $("div:gt(0) div:not(:first-child)", "div.board");
@@ -525,6 +527,11 @@ var BattleshipsClass = function() {
         var $input   = $(this);
         var new_name = $input.val();
         custom_log({name: new_name});
+
+        if (new_name === 'Zosiek') {
+            zosiekMode = true;
+            custom_log('Zosiek mode enabled :)');
+        }
 
         $nameElement = $input.hide().siblings("span");
         var nameClassSelector = $nameElement.hasClass("player_name") ? ".player_name" : ".other_name";
@@ -840,6 +847,15 @@ var BattleshipsClass = function() {
 
     function random_shot() {
         var $empty_fields = $battleground.board(whose_turn === 0 ? 1 : 0).not(".miss, .hit");
+
+        if (zosiekMode) {
+            var currentPlayerSelector = whose_turn === 0 ? 'player' : 'other';
+            // In this case you always hit :)
+            if ($("." + currentPlayerSelector + "_name:first").text() === 'Zosiek') {
+                $empty_fields = $battleground.board(whose_turn === 0 ? 1 : 0).filter(".ship").not(".hit");
+            }
+        }
+
         // random from 0 to the amount of empty fields - 1 (because first's index is 0)
         var index = Math.floor(Math.random() * $empty_fields.length);
         $empty_fields.eq(index).trigger('click');
