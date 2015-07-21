@@ -426,28 +426,29 @@ div.board div.hit {
 },removeAttr:function(a,b){var c,d,e=0,f=b&&b.match(E);if(f&&1===a.nodeType)while(c=f[e++])d=n.propFix[c]||c,n.expr.match.bool.test(c)&&(a[d]=!1),a.removeAttribute(c)},attrHooks:{type:{set:function(a,b){if(!k.radioValue&&"radio"===b&&n.nodeName(a,"input")){var c=a.value;return a.setAttribute("type",b),c&&(a.value=c),b}}}}}),Zb={set:function(a,b,c){return b===!1?n.removeAttr(a,c):a.setAttribute(c,c),c}},n.each(n.expr.match.bool.source.match(/\w+/g),function(a,b){var c=$b[b]||n.find.attr;$b[b]=function(a,b,d){var e,f;return d||(f=$b[b],$b[b]=e,e=null!=c(a,b,d)?b.toLowerCase():null,$b[b]=f),e}});var _b=/^(?:input|select|textarea|button)$/i;n.fn.extend({prop:function(a,b){return J(this,n.prop,a,b,arguments.length>1)},removeProp:function(a){return this.each(function(){delete this[n.propFix[a]||a]})}}),n.extend({propFix:{"for":"htmlFor","class":"className"},prop:function(a,b,c){var d,e,f,g=a.nodeType;if(a&&3!==g&&8!==g&&2!==g)return f=1!==g||!n.isXMLDoc(a),f&&(b=n.propFix[b]||b,e=n.propHooks[b]),void 0!==c?e&&"set"in e&&void 0!==(d=e.set(a,c,b))?d:a[b]=c:e&&"get"in e&&null!==(d=e.get(a,b))?d:a[b]},propHooks:{tabIndex:{get:function(a){return a.hasAttribute("tabindex")||_b.test(a.nodeName)||a.href?a.tabIndex:-1}}}}),k.optSelected||(n.propHooks.selected={get:function(a){var b=a.parentNode;return b&&b.parentNode&&b.parentNode.selectedIndex,null}}),n.each(["tabIndex","readOnly","maxLength","cellSpacing","cellPadding","rowSpan","colSpan","useMap","frameBorder","contentEditable"],function(){n.propFix[this.toLowerCase()]=this});var ac=/[\t\r\n\f]/g;n.fn.extend({addClass:function(a){var b,c,d,e,f,g,h="string"==typeof a&&a,i=0,j=this.length;if(n.isFunction(a))return this.each(function(b){n(this).addClass(a.call(this,b,this.className))});if(h)for(b=(a||"").match(E)||[];j>i;i++)if(c=this[i],d=1===c.nodeType&&(c.className?(" "+c.className+" ").replace(ac," "):" ")){f=0;while(e=b[f++])d.indexOf(" "+e+" ")<0&&(d+=e+" ");g=n.trim(d),c.className!==g&&(c.className=g)}return this},removeClass:function(a){var b,c,d,e,f,g,h=0===arguments.length||"string"==typeof a&&a,i=0,j=this.length;if(n.isFunction(a))return this.each(function(b){n(this).removeClass(a.call(this,b,this.className))});if(h)for(b=(a||"").match(E)||[];j>i;i++)if(c=this[i],d=1===c.nodeType&&(c.className?(" "+c.className+" ").replace(ac," "):"")){f=0;while(e=b[f++])while(d.indexOf(" "+e+" ")>=0)d=d.replace(" "+e+" "," ");g=a?n.trim(d):"",c.className!==g&&(c.className=g)}return this},toggleClass:function(a,b){var c=typeof a;return"boolean"==typeof b&&"string"===c?b?this.addClass(a):this.removeClass(a):this.each(n.isFunction(a)?function(c){n(this).toggleClass(a.call(this,c,this.className,b),b)}:function(){if("string"===c){var b,d=0,e=n(this),f=a.match(E)||[];while(b=f[d++])e.hasClass(b)?e.removeClass(b):e.addClass(b)}else(c===U||"boolean"===c)&&(this.className&&L.set(this,"__className__",this.className),this.className=this.className||a===!1?"":L.get(this,"__className__")||"")})},hasClass:function(a){for(var b=" "+a+" ",c=0,d=this.length;d>c;c++)if(1===this[c].nodeType&&(" "+this[c].className+" ").replace(ac," ").indexOf(b)>=0)return!0;return!1}});var bc=/\r/g;n.fn.extend({val:function(a){var b,c,d,e=this[0];{if(arguments.length)return d=n.isFunction(a),this.each(function(c){var e;1===this.nodeType&&(e=d?a.call(this,c,n(this).val()):a,null==e?e="":"number"==typeof e?e+="":n.isArray(e)&&(e=n.map(e,function(a){return null==a?"":a+""})),b=n.valHooks[this.type]||n.valHooks[this.nodeName.toLowerCase()],b&&"set"in b&&void 0!==b.set(this,e,"value")||(this.value=e))});if(e)return b=n.valHooks[e.type]||n.valHooks[e.nodeName.toLowerCase()],b&&"get"in b&&void 0!==(c=b.get(e,"value"))?c:(c=e.value,"string"==typeof c?c.replace(bc,""):null==c?"":c)}}}),n.extend({valHooks:{option:{get:function(a){var b=n.find.attr(a,"value");return null!=b?b:n.trim(n.text(a))}},select:{get:function(a){for(var b,c,d=a.options,e=a.selectedIndex,f="select-one"===a.type||0>e,g=f?null:[],h=f?e+1:d.length,i=0>e?h:f?e:0;h>i;i++)if(c=d[i],!(!c.selected&&i!==e||(k.optDisabled?c.disabled:null!==c.getAttribute("disabled"))||c.parentNode.disabled&&n.nodeName(c.parentNode,"optgroup"))){if(b=n(c).val(),f)return b;g.push(b)}return g},set:function(a,b){var c,d,e=a.options,f=n.makeArray(b),g=e.length;while(g--)d=e[g],(d.selected=n.inArray(d.value,f)>=0)&&(c=!0);return c||(a.selectedIndex=-1),f}}}}),n.each(["radio","checkbox"],function(){n.valHooks[this]={set:function(a,b){return n.isArray(b)?a.checked=n.inArray(n(a).val(),b)>=0:void 0}},k.checkOn||(n.valHooks[this].get=function(a){return null===a.getAttribute("value")?"on":a.value})}),n.each("blur focus focusin focusout load resize scroll unload click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup error contextmenu".split(" "),function(a,b){n.fn[b]=function(a,c){return arguments.length>0?this.on(b,null,a,c):this.trigger(b)}}),n.fn.extend({hover:function(a,b){return this.mouseenter(a).mouseleave(b||a)},bind:function(a,b,c){return this.on(a,null,b,c)},unbind:function(a,b){return this.off(a,null,b)},delegate:function(a,b,c,d){return this.on(b,a,c,d)},undelegate:function(a,b,c){return 1===arguments.length?this.off(a,"**"):this.off(b,a||"**",c)}});var cc=n.now(),dc=/\?/;n.parseJSON=function(a){return JSON.parse(a+"")},n.parseXML=function(a){var b,c;if(!a||"string"!=typeof a)return null;try{c=new DOMParser,b=c.parseFromString(a,"text/xml")}catch(d){b=void 0}return(!b||b.getElementsByTagName("parsererror").length)&&n.error("Invalid XML: "+a),b};var ec,fc,gc=/#.*$/,hc=/([?&])_=[^&]*/,ic=/^(.*?):[ \t]*([^\r\n]*)$/gm,jc=/^(?:about|app|app-storage|.+-extension|file|res|widget):$/,kc=/^(?:GET|HEAD)$/,lc=/^\/\//,mc=/^([\w.+-]+:)(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/,nc={},oc={},pc="*/".concat("*");try{fc=location.href}catch(qc){fc=l.createElement("a"),fc.href="",fc=fc.href}ec=mc.exec(fc.toLowerCase())||[];function rc(a){return function(b,c){"string"!=typeof b&&(c=b,b="*");var d,e=0,f=b.toLowerCase().match(E)||[];if(n.isFunction(c))while(d=f[e++])"+"===d[0]?(d=d.slice(1)||"*",(a[d]=a[d]||[]).unshift(c)):(a[d]=a[d]||[]).push(c)}}function sc(a,b,c,d){var e={},f=a===oc;function g(h){var i;return e[h]=!0,n.each(a[h]||[],function(a,h){var j=h(b,c,d);return"string"!=typeof j||f||e[j]?f?!(i=j):void 0:(b.dataTypes.unshift(j),g(j),!1)}),i}return g(b.dataTypes[0])||!e["*"]&&g("*")}function tc(a,b){var c,d,e=n.ajaxSettings.flatOptions||{};for(c in b)void 0!==b[c]&&((e[c]?a:d||(d={}))[c]=b[c]);return d&&n.extend(!0,a,d),a}function uc(a,b,c){var d,e,f,g,h=a.contents,i=a.dataTypes;while("*"===i[0])i.shift(),void 0===d&&(d=a.mimeType||b.getResponseHeader("Content-Type"));if(d)for(e in h)if(h[e]&&h[e].test(d)){i.unshift(e);break}if(i[0]in c)f=i[0];else{for(e in c){if(!i[0]||a.converters[e+" "+i[0]]){f=e;break}g||(g=e)}f=f||g}return f?(f!==i[0]&&i.unshift(f),c[f]):void 0}function vc(a,b,c,d){var e,f,g,h,i,j={},k=a.dataTypes.slice();if(k[1])for(g in a.converters)j[g.toLowerCase()]=a.converters[g];f=k.shift();while(f)if(a.responseFields[f]&&(c[a.responseFields[f]]=b),!i&&d&&a.dataFilter&&(b=a.dataFilter(b,a.dataType)),i=f,f=k.shift())if("*"===f)f=i;else if("*"!==i&&i!==f){if(g=j[i+" "+f]||j["* "+f],!g)for(e in j)if(h=e.split(" "),h[1]===f&&(g=j[i+" "+h[0]]||j["* "+h[0]])){g===!0?g=j[e]:j[e]!==!0&&(f=h[0],k.unshift(h[1]));break}if(g!==!0)if(g&&a["throws"])b=g(b);else try{b=g(b)}catch(l){return{state:"parsererror",error:g?l:"No conversion from "+i+" to "+f}}}return{state:"success",data:b}}n.extend({active:0,lastModified:{},etag:{},ajaxSettings:{url:fc,type:"GET",isLocal:jc.test(ec[1]),global:!0,processData:!0,async:!0,contentType:"application/x-www-form-urlencoded; charset=UTF-8",accepts:{"*":pc,text:"text/plain",html:"text/html",xml:"application/xml, text/xml",json:"application/json, text/javascript"},contents:{xml:/xml/,html:/html/,json:/json/},responseFields:{xml:"responseXML",text:"responseText",json:"responseJSON"},converters:{"* text":String,"text html":!0,"text json":n.parseJSON,"text xml":n.parseXML},flatOptions:{url:!0,context:!0}},ajaxSetup:function(a,b){return b?tc(tc(a,n.ajaxSettings),b):tc(n.ajaxSettings,a)},ajaxPrefilter:rc(nc),ajaxTransport:rc(oc),ajax:function(a,b){"object"==typeof a&&(b=a,a=void 0),b=b||{};var c,d,e,f,g,h,i,j,k=n.ajaxSetup({},b),l=k.context||k,m=k.context&&(l.nodeType||l.jquery)?n(l):n.event,o=n.Deferred(),p=n.Callbacks("once memory"),q=k.statusCode||{},r={},s={},t=0,u="canceled",v={readyState:0,getResponseHeader:function(a){var b;if(2===t){if(!f){f={};while(b=ic.exec(e))f[b[1].toLowerCase()]=b[2]}b=f[a.toLowerCase()]}return null==b?null:b},getAllResponseHeaders:function(){return 2===t?e:null},setRequestHeader:function(a,b){var c=a.toLowerCase();return t||(a=s[c]=s[c]||a,r[a]=b),this},overrideMimeType:function(a){return t||(k.mimeType=a),this},statusCode:function(a){var b;if(a)if(2>t)for(b in a)q[b]=[q[b],a[b]];else v.always(a[v.status]);return this},abort:function(a){var b=a||u;return c&&c.abort(b),x(0,b),this}};if(o.promise(v).complete=p.add,v.success=v.done,v.error=v.fail,k.url=((a||k.url||fc)+"").replace(gc,"").replace(lc,ec[1]+"//"),k.type=b.method||b.type||k.method||k.type,k.dataTypes=n.trim(k.dataType||"*").toLowerCase().match(E)||[""],null==k.crossDomain&&(h=mc.exec(k.url.toLowerCase()),k.crossDomain=!(!h||h[1]===ec[1]&&h[2]===ec[2]&&(h[3]||("http:"===h[1]?"80":"443"))===(ec[3]||("http:"===ec[1]?"80":"443")))),k.data&&k.processData&&"string"!=typeof k.data&&(k.data=n.param(k.data,k.traditional)),sc(nc,k,b,v),2===t)return v;i=k.global,i&&0===n.active++&&n.event.trigger("ajaxStart"),k.type=k.type.toUpperCase(),k.hasContent=!kc.test(k.type),d=k.url,k.hasContent||(k.data&&(d=k.url+=(dc.test(d)?"&":"?")+k.data,delete k.data),k.cache===!1&&(k.url=hc.test(d)?d.replace(hc,"$1_="+cc++):d+(dc.test(d)?"&":"?")+"_="+cc++)),k.ifModified&&(n.lastModified[d]&&v.setRequestHeader("If-Modified-Since",n.lastModified[d]),n.etag[d]&&v.setRequestHeader("If-None-Match",n.etag[d])),(k.data&&k.hasContent&&k.contentType!==!1||b.contentType)&&v.setRequestHeader("Content-Type",k.contentType),v.setRequestHeader("Accept",k.dataTypes[0]&&k.accepts[k.dataTypes[0]]?k.accepts[k.dataTypes[0]]+("*"!==k.dataTypes[0]?", "+pc+"; q=0.01":""):k.accepts["*"]);for(j in k.headers)v.setRequestHeader(j,k.headers[j]);if(k.beforeSend&&(k.beforeSend.call(l,v,k)===!1||2===t))return v.abort();u="abort";for(j in{success:1,error:1,complete:1})v[j](k[j]);if(c=sc(oc,k,b,v)){v.readyState=1,i&&m.trigger("ajaxSend",[v,k]),k.async&&k.timeout>0&&(g=setTimeout(function(){v.abort("timeout")},k.timeout));try{t=1,c.send(r,x)}catch(w){if(!(2>t))throw w;x(-1,w)}}else x(-1,"No Transport");function x(a,b,f,h){var j,r,s,u,w,x=b;2!==t&&(t=2,g&&clearTimeout(g),c=void 0,e=h||"",v.readyState=a>0?4:0,j=a>=200&&300>a||304===a,f&&(u=uc(k,v,f)),u=vc(k,u,v,j),j?(k.ifModified&&(w=v.getResponseHeader("Last-Modified"),w&&(n.lastModified[d]=w),w=v.getResponseHeader("etag"),w&&(n.etag[d]=w)),204===a||"HEAD"===k.type?x="nocontent":304===a?x="notmodified":(x=u.state,r=u.data,s=u.error,j=!s)):(s=x,(a||!x)&&(x="error",0>a&&(a=0))),v.status=a,v.statusText=(b||x)+"",j?o.resolveWith(l,[r,x,v]):o.rejectWith(l,[v,x,s]),v.statusCode(q),q=void 0,i&&m.trigger(j?"ajaxSuccess":"ajaxError",[v,k,j?r:s]),p.fireWith(l,[v,x]),i&&(m.trigger("ajaxComplete",[v,k]),--n.active||n.event.trigger("ajaxStop")))}return v},getJSON:function(a,b,c){return n.get(a,b,c,"json")},getScript:function(a,b){return n.get(a,void 0,b,"script")}}),n.each(["get","post"],function(a,b){n[b]=function(a,c,d,e){return n.isFunction(c)&&(e=e||d,d=c,c=void 0),n.ajax({url:a,type:b,dataType:e,data:c,success:d})}}),n.each(["ajaxStart","ajaxStop","ajaxComplete","ajaxError","ajaxSuccess","ajaxSend"],function(a,b){n.fn[b]=function(a){return this.on(b,a)}}),n._evalUrl=function(a){return n.ajax({url:a,type:"GET",dataType:"script",async:!1,global:!1,"throws":!0})},n.fn.extend({wrapAll:function(a){var b;return n.isFunction(a)?this.each(function(b){n(this).wrapAll(a.call(this,b))}):(this[0]&&(b=n(a,this[0].ownerDocument).eq(0).clone(!0),this[0].parentNode&&b.insertBefore(this[0]),b.map(function(){var a=this;while(a.firstElementChild)a=a.firstElementChild;return a}).append(this)),this)},wrapInner:function(a){return this.each(n.isFunction(a)?function(b){n(this).wrapInner(a.call(this,b))}:function(){var b=n(this),c=b.contents();c.length?c.wrapAll(a):b.append(a)})},wrap:function(a){var b=n.isFunction(a);return this.each(function(c){n(this).wrapAll(b?a.call(this,c):a)})},unwrap:function(){return this.parent().each(function(){n.nodeName(this,"body")||n(this).replaceWith(this.childNodes)}).end()}}),n.expr.filters.hidden=function(a){return a.offsetWidth<=0&&a.offsetHeight<=0},n.expr.filters.visible=function(a){return!n.expr.filters.hidden(a)};var wc=/%20/g,xc=/\[\]$/,yc=/\r?\n/g,zc=/^(?:submit|button|image|reset|file)$/i,Ac=/^(?:input|select|textarea|keygen)/i;function Bc(a,b,c,d){var e;if(n.isArray(b))n.each(b,function(b,e){c||xc.test(a)?d(a,e):Bc(a+"["+("object"==typeof e?b:"")+"]",e,c,d)});else if(c||"object"!==n.type(b))d(a,b);else for(e in b)Bc(a+"["+e+"]",b[e],c,d)}n.param=function(a,b){var c,d=[],e=function(a,b){b=n.isFunction(b)?b():null==b?"":b,d[d.length]=encodeURIComponent(a)+"="+encodeURIComponent(b)};if(void 0===b&&(b=n.ajaxSettings&&n.ajaxSettings.traditional),n.isArray(a)||a.jquery&&!n.isPlainObject(a))n.each(a,function(){e(this.name,this.value)});else for(c in a)Bc(c,a[c],b,e);return d.join("&").replace(wc,"+")},n.fn.extend({serialize:function(){return n.param(this.serializeArray())},serializeArray:function(){return this.map(function(){var a=n.prop(this,"elements");return a?n.makeArray(a):this}).filter(function(){var a=this.type;return this.name&&!n(this).is(":disabled")&&Ac.test(this.nodeName)&&!zc.test(a)&&(this.checked||!T.test(a))}).map(function(a,b){var c=n(this).val();return null==c?null:n.isArray(c)?n.map(c,function(a){return{name:b.name,value:a.replace(yc,"\r\n")}}):{name:b.name,value:c.replace(yc,"\r\n")}}).get()}}),n.ajaxSettings.xhr=function(){try{return new XMLHttpRequest}catch(a){}};var Cc=0,Dc={},Ec={0:200,1223:204},Fc=n.ajaxSettings.xhr();a.ActiveXObject&&n(a).on("unload",function(){for(var a in Dc)Dc[a]()}),k.cors=!!Fc&&"withCredentials"in Fc,k.ajax=Fc=!!Fc,n.ajaxTransport(function(a){var b;return k.cors||Fc&&!a.crossDomain?{send:function(c,d){var e,f=a.xhr(),g=++Cc;if(f.open(a.type,a.url,a.async,a.username,a.password),a.xhrFields)for(e in a.xhrFields)f[e]=a.xhrFields[e];a.mimeType&&f.overrideMimeType&&f.overrideMimeType(a.mimeType),a.crossDomain||c["X-Requested-With"]||(c["X-Requested-With"]="XMLHttpRequest");for(e in c)f.setRequestHeader(e,c[e]);b=function(a){return function(){b&&(delete Dc[g],b=f.onload=f.onerror=null,"abort"===a?f.abort():"error"===a?d(f.status,f.statusText):d(Ec[f.status]||f.status,f.statusText,"string"==typeof f.responseText?{text:f.responseText}:void 0,f.getAllResponseHeaders()))}},f.onload=b(),f.onerror=b("error"),b=Dc[g]=b("abort");try{f.send(a.hasContent&&a.data||null)}catch(h){if(b)throw h}},abort:function(){b&&b()}}:void 0}),n.ajaxSetup({accepts:{script:"text/javascript, application/javascript, application/ecmascript, application/x-ecmascript"},contents:{script:/(?:java|ecma)script/},converters:{"text script":function(a){return n.globalEval(a),a}}}),n.ajaxPrefilter("script",function(a){void 0===a.cache&&(a.cache=!1),a.crossDomain&&(a.type="GET")}),n.ajaxTransport("script",function(a){if(a.crossDomain){var b,c;return{send:function(d,e){b=n("<script>").prop({async:!0,charset:a.scriptCharset,src:a.url}).on("load error",c=function(a){b.remove(),c=null,a&&e("error"===a.type?404:200,a.type)}),l.head.appendChild(b[0])},abort:function(){c&&c()}}}});var Gc=[],Hc=/(=)\?(?=&|$)|\?\?/;n.ajaxSetup({jsonp:"callback",jsonpCallback:function(){var a=Gc.pop()||n.expando+"_"+cc++;return this[a]=!0,a}}),n.ajaxPrefilter("json jsonp",function(b,c,d){var e,f,g,h=b.jsonp!==!1&&(Hc.test(b.url)?"url":"string"==typeof b.data&&!(b.contentType||"").indexOf("application/x-www-form-urlencoded")&&Hc.test(b.data)&&"data");return h||"jsonp"===b.dataTypes[0]?(e=b.jsonpCallback=n.isFunction(b.jsonpCallback)?b.jsonpCallback():b.jsonpCallback,h?b[h]=b[h].replace(Hc,"$1"+e):b.jsonp!==!1&&(b.url+=(dc.test(b.url)?"&":"?")+b.jsonp+"="+e),b.converters["script json"]=function(){return g||n.error(e+" was not called"),g[0]},b.dataTypes[0]="json",f=a[e],a[e]=function(){g=arguments},d.always(function(){a[e]=f,b[e]&&(b.jsonpCallback=c.jsonpCallback,Gc.push(e)),g&&n.isFunction(f)&&f(g[0]),g=f=void 0}),"script"):void 0}),n.parseHTML=function(a,b,c){if(!a||"string"!=typeof a)return null;"boolean"==typeof b&&(c=b,b=!1),b=b||l;var d=v.exec(a),e=!c&&[];return d?[b.createElement(d[1])]:(d=n.buildFragment([a],b,e),e&&e.length&&n(e).remove(),n.merge([],d.childNodes))};var Ic=n.fn.load;n.fn.load=function(a,b,c){if("string"!=typeof a&&Ic)return Ic.apply(this,arguments);var d,e,f,g=this,h=a.indexOf(" ");return h>=0&&(d=n.trim(a.slice(h)),a=a.slice(0,h)),n.isFunction(b)?(c=b,b=void 0):b&&"object"==typeof b&&(e="POST"),g.length>0&&n.ajax({url:a,type:e,dataType:"html",data:b}).done(function(a){f=arguments,g.html(d?n("<div>").append(n.parseHTML(a)).find(d):a)}).complete(c&&function(a,b){g.each(c,f||[a.responseText,b,a])}),this},n.expr.filters.animated=function(a){return n.grep(n.timers,function(b){return a===b.elem}).length};var Jc=a.document.documentElement;function Kc(a){return n.isWindow(a)?a:9===a.nodeType&&a.defaultView}n.offset={setOffset:function(a,b,c){var d,e,f,g,h,i,j,k=n.css(a,"position"),l=n(a),m={};"static"===k&&(a.style.position="relative"),h=l.offset(),f=n.css(a,"top"),i=n.css(a,"left"),j=("absolute"===k||"fixed"===k)&&(f+i).indexOf("auto")>-1,j?(d=l.position(),g=d.top,e=d.left):(g=parseFloat(f)||0,e=parseFloat(i)||0),n.isFunction(b)&&(b=b.call(a,c,h)),null!=b.top&&(m.top=b.top-h.top+g),null!=b.left&&(m.left=b.left-h.left+e),"using"in b?b.using.call(a,m):l.css(m)}},n.fn.extend({offset:function(a){if(arguments.length)return void 0===a?this:this.each(function(b){n.offset.setOffset(this,a,b)});var b,c,d=this[0],e={top:0,left:0},f=d&&d.ownerDocument;if(f)return b=f.documentElement,n.contains(b,d)?(typeof d.getBoundingClientRect!==U&&(e=d.getBoundingClientRect()),c=Kc(f),{top:e.top+c.pageYOffset-b.clientTop,left:e.left+c.pageXOffset-b.clientLeft}):e},position:function(){if(this[0]){var a,b,c=this[0],d={top:0,left:0};return"fixed"===n.css(c,"position")?b=c.getBoundingClientRect():(a=this.offsetParent(),b=this.offset(),n.nodeName(a[0],"html")||(d=a.offset()),d.top+=n.css(a[0],"borderTopWidth",!0),d.left+=n.css(a[0],"borderLeftWidth",!0)),{top:b.top-d.top-n.css(c,"marginTop",!0),left:b.left-d.left-n.css(c,"marginLeft",!0)}}},offsetParent:function(){return this.map(function(){var a=this.offsetParent||Jc;while(a&&!n.nodeName(a,"html")&&"static"===n.css(a,"position"))a=a.offsetParent;return a||Jc})}}),n.each({scrollLeft:"pageXOffset",scrollTop:"pageYOffset"},function(b,c){var d="pageYOffset"===c;n.fn[b]=function(e){return J(this,function(b,e,f){var g=Kc(b);return void 0===f?g?g[c]:b[e]:void(g?g.scrollTo(d?a.pageXOffset:f,d?f:a.pageYOffset):b[e]=f)},b,e,arguments.length,null)}}),n.each(["top","left"],function(a,b){n.cssHooks[b]=yb(k.pixelPosition,function(a,c){return c?(c=xb(a,b),vb.test(c)?n(a).position()[b]+"px":c):void 0})}),n.each({Height:"height",Width:"width"},function(a,b){n.each({padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){var f=arguments.length&&(c||"boolean"!=typeof d),g=c||(d===!0||e===!0?"margin":"border");return J(this,function(b,c,d){var e;return n.isWindow(b)?b.document.documentElement["client"+a]:9===b.nodeType?(e=b.documentElement,Math.max(b.body["scroll"+a],e["scroll"+a],b.body["offset"+a],e["offset"+a],e["client"+a])):void 0===d?n.css(b,c,g):n.style(b,c,d,g)},b,f?d:void 0,f,null)}})}),n.fn.size=function(){return this.length},n.fn.andSelf=n.fn.addBack,"function"==typeof define&&define.amd&&define("jquery",[],function(){return n});var Lc=a.jQuery,Mc=a.$;return n.noConflict=function(b){return a.$===n&&(a.$=Mc),b&&a.jQuery===n&&(a.jQuery=Lc),n},typeof b===U&&(a.jQuery=a.$=n),n});
 </script>
 <script>
+'use strict';
 var BattleshipsClass = function() {
-    // log events managements
-    var debug = true;
+    // events log management
+    var debug = true,
     // battle boards axis Y legend
-    var axis_y = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+        axisY = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
     // battle boards axis X legend
-    var axis_x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        axisX = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     // whether the game has started
-    var game_started = false;
+        gameStarted = false,
     // whether the game has ended
-    var game_ended = false;
+        gameEnded = false,
     // whether player started the game
-    var player_started = false;
+        playerStarted = false,
     // which player's turn is now
-    var whose_turn = 0;
+        whoseTurn = 0,
     // battle boards
-    var $battleground = null;
+        $battleground = null,
     // my sister must always win :)
-    var zosiekMode = false;
+        zosiekMode = false;
 
     this.run = function () {
-        $battleground = $("div:gt(0) div:not(:first-child)", "div.board");
+        $battleground = $('div:gt(0) div:not(:first-child)', 'div.board');
         $battleground.board = function(index) {
             return index === 0 ? $battleground.slice(0, 100) : $battleground.slice(100);
         };
@@ -456,258 +457,273 @@ var BattleshipsClass = function() {
         $battleground.on('click', battlegroundClickCallback);
 
         // starting the game
-        $("#start").on('click', startClickCallback);
+        $('#start').on('click', startClickCallback);
 
         // updating player's name
-        $(".name_update")
+        $('.name_update')
             .on('click', nameUpdateClickCallback)
-            .siblings(":text")
+            .siblings(':text')
                 .on({keyup: nameUpdateTextKeyupCallback, blur: nameUpdateTextBlurCallback});
 
         // starts new game
-        $("#new_game").on('click', newGameClickCallback);
+        $('#new_game').on('click', newGameClickCallback);
 
         // shoot randomly
-        $("#random_shot").on('click', random_shot);
+        $('#random_shot').on('click', randomShot);
 
         // set ships randomly
-        $("#random_ships").on('click', {retry: 2}, random_ships);
+        $('#random_ships').on('click', {retry: 2}, randomShips);
     };
 
     function battlegroundClickCallback() {
         // shoot
-        if (game_started) {
+        if (gameStarted) {
             // either player and other board or the opposite
-            if (!!whose_turn === ($battleground.index(this) >= 100)) {
-                alert("It's other player's turn");
+            if (!!whoseTurn === ($battleground.index(this) >= 100)) {
+                alert('It\'s other player\'s turn');
                 return false;
             }
             shot(this);
         // either started and other board or not started and player board
-        } else if (player_started === ($battleground.index(this) >= 100)) {
-            $(this).toggleClass("ship");
+        } else if (playerStarted === ($battleground.index(this) >= 100)) {
+            $(this).toggleClass('ship');
         }
     }
 
     function startClickCallback() {
-        if (game_started) {
-            alert("You have already started the game");
+        var $ships, shipsArray;
+
+        if (gameStarted) {
+            alert('You have already started the game');
             return false;
         }
 
-        var $ships = $battleground.board(whose_turn).filter(".ship");
+        $ships = $battleground.board(whoseTurn).filter('.ship');
 
-        if (check_ships($ships) == false) {
-            alert("There is either not enough ships or they're set incorrectly");
+        if (checkShips($ships) === false) {
+            alert('There is either not enough ships or they\'re set incorrectly');
             return false;
         }
 
-        var shipsArray = $ships.map(function() {
-            return get_coords(this);
+        shipsArray = $ships.map(function() {
+            return getCoords(this);
         }).toArray();
 
-        custom_log({ships: shipsArray});
-        start_game();
+        customLog({ships: shipsArray});
+        startGame();
     }
 
     function nameUpdateClickCallback() {
-        $(this).hide().siblings(":text").show().select();
+        $(this).hide().siblings(':text').show().select();
     }
 
     function nameUpdateTextKeyupCallback(event) {
+        var $input, newName, $nameElement, nameClassSelector;
+
         // if pressed ESC - leave the input, if ENTER - process, if other - do nothing
-        if (event.which != 13) {
-            if (event.which == 27) {
+        if (event.which !== 13) {
+            if (event.which === 27) {
                 $(this).blur();
             }
 
             return true;
         }
 
-        var $input   = $(this);
-        var new_name = $input.val();
-        custom_log({name: new_name});
+        $input = $(this);
+        newName = $input.val();
+        customLog({name: newName});
 
-        if (new_name === 'Zosiek') {
+        if (newName === 'Zosiek') {
             zosiekMode = true;
-            custom_log('Zosiek mode enabled :)');
+            customLog('Zosiek mode enabled :)');
         }
 
-        $nameElement = $input.hide().siblings("span");
-        var nameClassSelector = $nameElement.hasClass("player_name") ? ".player_name" : ".other_name";
-        $(nameClassSelector).text(new_name);
+        $nameElement = $input.hide().siblings('span');
+        nameClassSelector = $nameElement.hasClass('player_name') ? '.player_name' : '.other_name';
+        $(nameClassSelector).text(newName);
         $nameElement.show();
     }
 
     function nameUpdateTextBlurCallback() {
-        if ($(this).has(":visible")) {
-            var new_name = $(this).siblings("span").text();
+        var newName;
 
-            $(this).hide().val(new_name).siblings("span").show();
+        if ($(this).has(':visible')) {
+            newName = $(this).siblings('span').text();
+            $(this).hide().val(newName).siblings('span').show();
         }
     }
 
     function newGameClickCallback() {
-        if (game_ended || confirm("Are you sure you want to quit the current game?")) {
+        if (gameEnded || confirm('Are you sure you want to quit the current game?')) {
             $battleground.removeClass();
-            game_started = false;
-            game_ended = false;
-            player_started = false;
+            gameStarted = false;
+            gameEnded = false;
+            playerStarted = false;
 
-            set_turn(true);
+            setTurn(true);
 
-            $("#start").prop('disabled', false);
-            $("#random_shot").hide();
-            $("#random_ships").show();
-            $("div.board").removeClass('hide_ships');
+            $('#start').prop('disabled', false);
+            $('#random_shot').hide();
+            $('#random_ships').show();
+            $('div.board').removeClass('hide_ships');
         }
     }
 
     function shot(element) {
-        if (!game_started) {
-            alert("You can't shoot at the moment - game is not started");
+        var coords, shotResult;
+
+        if (!gameStarted) {
+            alert('You can\'t shoot at the moment - game is not started');
             return false;
         }
 
-        if ($(element).is(".miss, .hit")) {
-            custom_log("You either already shot this field, or no ship could be there");
+        if ($(element).is('.miss, .hit')) {
+            customLog('You either already shot this field, or no ship could be there');
             return;
         }
 
-        var coords = get_coords(element);
-        custom_log({shot: coords});
+        coords = getCoords(element);
+        customLog({shot: coords});
 
-        var shotResult = mark_shot((whose_turn === 0 ? 1 : 0), coords);
-        custom_log(shotResult);
+        shotResult = markShot((whoseTurn === 0 ? 1 : 0), coords);
+        customLog(shotResult);
 
-        if (shotResult == "miss") {
-            set_turn(whose_turn === 1);
+        if (shotResult === 'miss') {
+            setTurn(whoseTurn === 1);
         }
 
-        if (shotResult == "sunk") {
-            check_game_end();
+        if (shotResult === 'sunk') {
+            checkGameEnd();
         }
     }
 
-    function get_coords(element) {
-        var index = $battleground.index(element);
+    function getCoords(element) {
+        var index = $battleground.index(element),
+            indexes, coordY, coordX, temp;
 
         // to convert: 1 -> [0,1], 12 -> [1,2], 167 -> [6,7]
-        var temp    = (index >= 100) ? (index - 100) : index;
-            temp    = (temp < 10 ? "0" : "") + temp;
-        var indexes = temp.split("");
+        temp = (index >= 100) ? (index - 100) : index;
+        temp = (temp < 10 ? '0' : '') + temp;
+        indexes = temp.split('');
 
-        var cord_y = axis_y[ indexes[1] ];
-        var cord_x = axis_x[ indexes[0] ];
+        coordY = axisY[ indexes[1] ];
+        coordX = axisX[ indexes[0] ];
 
-        return cord_y + cord_x;
+        return coordY + coordX;
     }
 
-    function get_field_by_coords(coords, board_number) {
-        if ($.type(coords) != "array") {
+    function getFieldByCoords(coords, boardNumber) {
+        var positionY, positionX, position;
+
+        if ($.type(coords) !== 'array') {
             coords = [coords.substr(0, 1), parseInt(coords.substr(1))];
         }
-        var position_y = $.inArray(coords[0], axis_y);
-        var position_x = $.inArray(coords[1], axis_x);
+        positionY = $.inArray(coords[0], axisY);
+        positionX = $.inArray(coords[1], axisX);
 
-        // parseInt("08") -> 0
-        var position = parseInt([position_x, position_y].join(''), 10) + (board_number * 100);
+        // parseInt('08') -> 0
+        position = parseInt([positionX, positionY].join(''), 10) + (boardNumber * 100);
 
         return $battleground.eq(position);
     }
 
-    function mark_shot(board_number, coords, type, tendency) {
-        if ($.type(coords) != "array") {
+    function markShot(boardNumber, coords, type, tendency) {
+        var field, positionY, positionX, markClass, missedCoords, i, tempField;
+
+        if ($.type(coords) !== 'array') {
             coords = [coords.substr(0, 1), parseInt(coords.substr(1))];
         }
-        var field         = get_field_by_coords(coords, board_number);
-        var position_y    = $.inArray(coords[0], axis_y);
-        var position_x    = $.inArray(coords[1], axis_x);
-        var mark_class    = '';
-        var missed_coords = [];
 
-        if (type == null) {
-            if (field.hasClass("ship")) {
-                type = is_sunk(board_number, coords) ? "sunk" : "hit";
+        field = getFieldByCoords(coords, boardNumber);
+        positionY = $.inArray(coords[0], axisY);
+        positionX = $.inArray(coords[1], axisX);
+        markClass = '';
+        missedCoords = [];
+
+        if (type === null) {
+            if (field.hasClass('ship')) {
+                type = isSunk(boardNumber, coords) ? 'sunk' : 'hit';
             } else {
-                type = "miss";
+                type = 'miss';
             }
         }
 
 
-        if (type == "miss") {
-            mark_class = "miss";
-            missed_coords.push(coords);
+        if (type === 'miss') {
+            markClass = 'miss';
+            missedCoords.push(coords);
         }
 
-        if (type == "hit" || type == "sunk") {
-            mark_class = "hit";
-            missed_coords.push( (position_y > 0 && position_x > 0) ? [axis_y[ position_y - 1 ], axis_x[ position_x - 1 ]] : [] );
-            missed_coords.push( (position_y > 0 && position_x < 9) ? [axis_y[ position_y - 1 ], axis_x[ position_x + 1 ]] : [] );
-            missed_coords.push( (position_y < 9 && position_x < 9) ? [axis_y[ position_y + 1 ], axis_x[ position_x + 1 ]] : [] );
-            missed_coords.push( (position_y < 9 && position_x > 0) ? [axis_y[ position_y + 1 ], axis_x[ position_x - 1 ]] : [] );
+        if (type === 'hit' || type === 'sunk') {
+            markClass = 'hit';
+            missedCoords.push( (positionY > 0 && positionX > 0) ? [axisY[ positionY - 1 ], axisX[ positionX - 1 ]] : [] );
+            missedCoords.push( (positionY > 0 && positionX < 9) ? [axisY[ positionY - 1 ], axisX[ positionX + 1 ]] : [] );
+            missedCoords.push( (positionY < 9 && positionX < 9) ? [axisY[ positionY + 1 ], axisX[ positionX + 1 ]] : [] );
+            missedCoords.push( (positionY < 9 && positionX > 0) ? [axisY[ positionY + 1 ], axisX[ positionX - 1 ]] : [] );
         }
 
-        if (type == "sunk") {
-            missed_coords.push( (position_y > 0)                   ? [axis_y[ position_y - 1 ], coords[1]]                : [] );
-            missed_coords.push( (position_y < 9)                   ? [axis_y[ position_y + 1 ], coords[1]]                : [] );
-            missed_coords.push( (position_x < 9)                   ? [coords[0], axis_x[ position_x + 1 ]]                : [] );
-            missed_coords.push( (position_x > 0)                   ? [coords[0], axis_x[ position_x - 1 ]]                : [] );
+        if (type === 'sunk') {
+            missedCoords.push( (positionY > 0)                  ? [axisY[ positionY - 1 ], coords[1]]              : [] );
+            missedCoords.push( (positionY < 9)                  ? [axisY[ positionY + 1 ], coords[1]]              : [] );
+            missedCoords.push( (positionX < 9)                  ? [coords[0], axisX[ positionX + 1 ]]              : [] );
+            missedCoords.push( (positionX > 0)                  ? [coords[0], axisX[ positionX - 1 ]]              : [] );
         }
 
 
-        for (var i = 0; i < missed_coords.length; i++) {
-            if (missed_coords[i].length == 0 || (tendency != null && tendency != i)) {
+        for (i = 0; i < missedCoords.length; i++) {
+            if (missedCoords[i].length === 0 || (tendency !== null && tendency !== i)) {
                 continue;
             }
 
-            var temp_field = get_field_by_coords(missed_coords[i], board_number);
+            tempField = getFieldByCoords(missedCoords[i], boardNumber);
 
-            if (temp_field.hasClass("hit") && type == "sunk") {
-                mark_shot(board_number, missed_coords[i], type, i);
+            if (tempField.hasClass('hit') && type === 'sunk') {
+                markShot(boardNumber, missedCoords[i], type, i);
             } else {
-                temp_field.addClass("miss");
+                tempField.addClass('miss');
             }
         }
 
 
-        if (tendency == null) {
-            field.addClass(mark_class);
+        if (tendency === null) {
+            field.addClass(markClass);
         }
 
         return type;
     }
 
-    function is_sunk(board_number, coords, tendency) {
-        if ($.type(coords) != "array") {
+    function isSunk(boardNumber, coords, tendency) {
+        var positionY, positionX, checkCoords, i, tempField;
+
+        // @DRY
+        if ($.type(coords) !== 'array') {
             coords = [coords.substr(0, 1), parseInt(coords.substr(1))];
         }
-        var position_y    = $.inArray(coords[0], axis_y);
-        var position_x    = $.inArray(coords[1], axis_x);
-        var check_coords  = [];
+        positionY = $.inArray(coords[0], axisY);
+        positionX = $.inArray(coords[1], axisX);
+        checkCoords = [];
 
-        check_coords.push( (position_y > 0) ? [axis_y[ position_y - 1 ], coords[1]] : [] );
-        check_coords.push( (position_y < 9) ? [axis_y[ position_y + 1 ], coords[1]] : [] );
-        check_coords.push( (position_x < 9) ? [coords[0], axis_x[ position_x + 1 ]] : [] );
-        check_coords.push( (position_x > 0) ? [coords[0], axis_x[ position_x - 1 ]] : [] );
+        checkCoords.push( (positionY > 0) ? [axisY[ positionY - 1 ], coords[1]] : [] );
+        checkCoords.push( (positionY < 9) ? [axisY[ positionY + 1 ], coords[1]] : [] );
+        checkCoords.push( (positionX < 9) ? [coords[0], axisX[ positionX + 1 ]] : [] );
+        checkCoords.push( (positionX > 0) ? [coords[0], axisX[ positionX - 1 ]] : [] );
 
-
-        for (var i = 0; i < check_coords.length; i++) {
-            if (check_coords[i].length == 0 || (tendency != null && tendency != i)) {
+        // @DRY - same as in mark_shot
+        for (i = 0; i < checkCoords.length; i++) {
+            if (checkCoords[i].length === 0 || (tendency !== null && tendency !== i)) {
                 continue;
             }
 
-            var temp_field = get_field_by_coords(check_coords[i], board_number);
+            tempField = getFieldByCoords(checkCoords[i], boardNumber);
 
-            if (temp_field.hasClass("hit")) {
-                if (is_sunk(board_number, check_coords[i], i) == false) {
+            if (tempField.hasClass('hit')) {
+                if (isSunk(boardNumber, checkCoords[i], i) === false) {
                     return false;
                 }
-            } else if (temp_field.hasClass("ship")) {
+            } else if (tempField.hasClass('ship')) {
                 return false;
             }
         }
-
 
         return true;
     }
@@ -715,108 +731,115 @@ var BattleshipsClass = function() {
     /**
      * @todo maybe only game_started, not player_started?
      */
-    function start_game() {
-        if (player_started) {
-            game_started = true;
+    function startGame() {
+        if (playerStarted) {
+            gameStarted = true;
         } else {
-            player_started = true;
-            $("div.board:first").addClass('hide_ships');
+            playerStarted = true;
+            $('div.board:first').addClass('hide_ships');
         }
 
-        if (game_started) {
-            $("#start").prop('disabled', true);
-            $("#random_shot, #random_ships").toggle();
-            $("div.board").addClass('hide_ships');
+        if (gameStarted) {
+            $('#start').prop('disabled', true);
+            $('#random_shot, #random_ships').toggle();
+            $('div.board').addClass('hide_ships');
         }
 
-        set_turn(game_started);
+        setTurn(gameStarted);
     }
 
-    function check_game_end() {
-        if (game_ended) {
-            return game_ended;
+    function checkGameEnd() {
+        if (gameEnded) {
+            return gameEnded;
         }
 
-        if ($battleground.board(0).filter(".hit").length >= 20) {
-            alert($(".other_name:first").text() + " won");
-            game_ended = true;
-        } else if ($battleground.board(1).filter(".hit").length >= 20) {
-            alert($(".player_name:first").text() + " won");
-            game_ended = true;
+        if ($battleground.board(0).filter('.hit').length >= 20) {
+            alert($('.other_name:first').text() + ' won');
+            gameEnded = true;
+        } else if ($battleground.board(1).filter('.hit').length >= 20) {
+            alert($('.player_name:first').text() + ' won');
+            gameEnded = true;
         }
 
-        return game_ended;
+        return gameEnded;
     }
 
     /**
      * @todo real number, not bool
      * @param {Number} playerNumber
      */
-    function set_turn(playerNumber) {
-        whose_turn = Number(!playerNumber);
-        $(".board_menu:eq(" + whose_turn + ") span").addClass("turn");
-        $(".board_menu:eq(" + Number(playerNumber) + ") span").removeClass("turn");
+    function setTurn(playerNumber) {
+        whoseTurn = Number(!playerNumber);
+        $('.board_menu:eq(' + whoseTurn + ') span').addClass('turn');
+        $('.board_menu:eq(' + Number(playerNumber) + ') span').removeClass('turn');
     }
 
     /**
      * @todo maybe pass only $board, or don't pass anything? $ships, but $battleground :|
      */
-    function check_ships($ships) {
-        var ships_array = $ships.map(function() {
-            return $battleground.board(whose_turn).index(this);
+    function checkShips($ships) {
+        var shipsArray,
+            shipsLength = 20,
+            shipsTypes = {1:0, 2:0, 3:0, 4:0},
+            directionMultipliers = [1, 10],
+            upperRightCorner,
+            lowerRightCorner,
+            borderIndex,
+            borderDistance,
+            index,
+            key,
+            idx,
+            i, j, k;
+
+        shipsArray = $ships.map(function() {
+            return $battleground.board(whoseTurn).index(this);
         }).toArray();
 
-        var ships_length = 20;
-        var ships_types  = {1:0, 2:0, 3:0, 4:0};
-        var direction_multipliers = [1, 10];
-        var idx;
-        var i, j, k;
-
-        if (ships_array.length != ships_length) {
+        if (shipsArray.length !== shipsLength) {
             return false;
         }
 
         // check if no edge connection
-        for (i = 0; i < ships_array.length; i++) {
-            idx = ((ships_array[i] < 10 ? "0" : "") + ships_array[i]).split("");
+        for (i = 0; i < shipsArray.length; i++) {
+            idx = ((shipsArray[i] < 10 ? '0' : '') + shipsArray[i]).split('');
 
-            if (idx[0] == 9) {
+            if (idx[0] === 9) {
                 continue;
             }
 
-            var upper_right_corner = (idx[1] > 0) && ($.inArray(ships_array[i] + 9, ships_array) != -1);
-            var lower_right_corner = (idx[1] < 9) && ($.inArray(ships_array[i] + 11, ships_array) != -1);
+            upperRightCorner = (idx[1] > 0) && ($.inArray(shipsArray[i] + 9, shipsArray) !== -1);
+            lowerRightCorner = (idx[1] < 9) && ($.inArray(shipsArray[i] + 11, shipsArray) !== -1);
 
-            if (upper_right_corner || lower_right_corner) {
+            if (upperRightCorner || lowerRightCorner) {
                 return false;
             }
         }
 
         // check if there are the right types of ships
-        for (i = 0; i < ships_array.length; i++) {
+        for (i = 0; i < shipsArray.length; i++) {
             // we ignore masts which have already been marked as a part of a ship
-            if (ships_array[i] === null) {
+            if (shipsArray[i] === null) {
                 continue;
             }
 
-            idx = ((ships_array[i] < 10 ? "0" : "") + ships_array[i]).split("");
+            idx = ((shipsArray[i] < 10 ? '0' : '') + shipsArray[i]).split('');
 
-            for (j = 0; j < direction_multipliers.length; j++) {
-                var border_index = parseInt(j) == 1 ? 0 : 1;
-                var border_distance = parseInt(idx[border_index]);
+            for (j = 0; j < directionMultipliers.length; j++) {
+                borderIndex = parseInt(j) === 1 ? 0 : 1;
+                borderDistance = parseInt(idx[borderIndex]);
 
                 k = 1;
                 // battleground border
-                while (border_distance + k <= 9) {
-                    var index = ships_array[i] + (k * direction_multipliers[j]);
-                    var key = $.inArray(index, ships_array);
+                while (borderDistance + k <= 9) {
+                    index = shipsArray[i] + (k * directionMultipliers[j]);
+                    key = $.inArray(index, shipsArray);
 
                     // no more masts
-                    if (key == -1) {
+                    if (key === -1) {
                         break;
                     }
 
-                    ships_array[key] = null;
+                    shipsArray[key] = null;
 
                     // ship is too long
                     if (++k > 4) {
@@ -825,19 +848,19 @@ var BattleshipsClass = function() {
                 }
 
                 // if not last direction check and only one (otherwise in both direction at least 1 mast would be found)
-                if ((k == 1) && (j + 1 != direction_multipliers.length)) {
+                if ((k === 1) && ((j + 1) !== directionMultipliers.length)) {
                     continue;
                 }
 
                 break; // either k > 1 (so ship found) or last loop
             }
 
-            ships_types[k]++;
+            shipsTypes[k]++;
         }
 
-        // strange way to check if ships_types == {1:4, 2:3, 3:2, 4:1}
-        for (i = 0; i < ships_types.length; i++) {
-            if (parseInt(i) + ships_types[i] != 5) {
+        // strange way to check if ships_types === {1:4, 2:3, 3:2, 4:1}
+        for (i = 0; i < shipsTypes.length; i++) {
+            if (parseInt(i) + shipsTypes[i] !== 5) {
                 return false;
             }
         }
@@ -845,75 +868,87 @@ var BattleshipsClass = function() {
         return true;
     }
 
-    function random_shot() {
-        var $empty_fields = $battleground.board(whose_turn === 0 ? 1 : 0).not(".miss, .hit");
+    function randomShot() {
+        var $emptyFields = $battleground.board(whoseTurn === 0 ? 1 : 0).not('.miss, .hit'),
+            index, currentPlayerSelector;
 
         if (zosiekMode) {
-            var currentPlayerSelector = whose_turn === 0 ? 'player' : 'other';
+            currentPlayerSelector = whoseTurn === 0 ? 'player' : 'other';
             // In this case you always hit :)
-            if ($("." + currentPlayerSelector + "_name:first").text() === 'Zosiek') {
-                $empty_fields = $battleground.board(whose_turn === 0 ? 1 : 0).filter(".ship").not(".hit");
+            if ($('.' + currentPlayerSelector + '_name:first').text() === 'Zosiek') {
+                $emptyFields = $battleground.board(whoseTurn === 0 ? 1 : 0).filter('.ship').not('.hit');
             }
         }
 
         // random from 0 to the amount of empty fields - 1 (because first's index is 0)
-        var index = Math.floor(Math.random() * $empty_fields.length);
-        $empty_fields.eq(index).trigger('click');
+        index = Math.floor(Math.random() * $emptyFields.length);
+        $emptyFields.eq(index).trigger('click');
     }
 
-    function random_ships(event) {
-        if (game_started) {
-            alert("You can't set ships - the game has already started");
+    function randomShips(event) {
+        var orientations = [0, 1], // 0 - vertical, 1 - horizontal
+            directionMultipliers = [1, 10],
+            shipsTypes = {1:4, 2:3, 3:2, 4:1}, // @DRY
+            $board = $battleground.board(whoseTurn),
+            numberOfShips,
+            masts,
+            orientation,
+            $startFields,
+            index,
+            idx,
+            j, k;
+
+        if (gameStarted) {
+            alert('You can\'t set ships - the game has already started');
             return false;
         }
 
-        var orientations = [0, 1]; // 0 - vertical, 1 - horizontal
-        var direction_multipliers = [1, 10];
-        var ships_types = {1:4, 2:3, 3:2, 4:1};
-        var $board = $battleground.board(whose_turn);
+        $board.filter('.ship').click();
+        for (numberOfShips in shipsTypes) {
+            masts = shipsTypes[numberOfShips];
 
-        $board.filter(".ship").click();
-        for (var number_of_ships in ships_types) {
-            var masts = ships_types[number_of_ships];
+            for (j = 0; j < numberOfShips; j++) {
+                orientation = orientations[ Math.floor(Math.random() * orientations.length) ];
+                markRestrictedStarts($board, masts, orientation);
+                $startFields = $board.not('.restricted');
 
-            for (var j = 0; j < number_of_ships; j++) {
-                var orientation = orientations[ Math.floor(Math.random() * orientations.length) ];
-                mark_restricted_starts($board, masts, orientation);
-                var $startFields = $board.not(".restricted");
-
-                var index = Math.floor(Math.random() * $startFields.length);
-                var idx = $board.index( $startFields.eq(index) );
-                for (var k = 0; k < masts; k++) {
-                    $board.eq(idx + k * direction_multipliers[orientation]).click();
+                index = Math.floor(Math.random() * $startFields.length);
+                idx = $board.index( $startFields.eq(index) );
+                for (k = 0; k < masts; k++) {
+                    $board.eq(idx + k * directionMultipliers[orientation]).click();
                 }
             }
         }
 
-        if (check_ships($board.filter(".ship")) == false) {
+        if (checkShips($board.filter('.ship')) === false) {
             if (event.data && event.data.retry > 0) {
-                $board.removeClass("ship");
+                $board.removeClass('ship');
                 event.data.retry--;
 
-                return random_ships(event);
+                return randomShips(event);
             }
 
             return false;
         }
 
-        $board.removeClass("restricted");
+        $board.removeClass('restricted');
 
         return true;
     }
 
-    function mark_restricted_starts($board, masts, orientation) {
-        var direction_multipliers = [1, 10];
+    function markRestrictedStarts($board, masts, orientation) {
+        var directionMultipliers = [1, 10],
+            marks,
+            i;
 
-        var marks = $board.filter(".ship").map(function() {
-            var index = $board.index(this);
-            var idx = ((index < 10 ? "0" : "") + index).split("");
-            var border_distance = parseInt(idx[Number(!orientation)]);
-
-            var mark = [index];
+        marks = $board.filter('.ship').map(function() {
+            var index = $board.index(this),
+                idx = ((index < 10 ? '0' : '') + index).split(''), // @DRY
+                borderDistance = parseInt(idx[Number(!orientation)]),
+                mark = [index],
+                safeIndex,
+                safeIdx,
+                k;
 
             if (idx[0] < 9) {
                 mark.push(index + 10);
@@ -943,36 +978,36 @@ var BattleshipsClass = function() {
                 mark.push(index - 1);
             }
 
-            for (var k = 2; (border_distance - k >= 0) && (k <= masts); k++) {
-                var safe_index = index - (k * direction_multipliers[orientation]);
-                var safe_idx = ((safe_index < 10 ? "0" : "") + safe_index).split("");
-                mark.push(safe_index);
+            for (k = 2; (borderDistance - k >= 0) && (k <= masts); k++) {
+                safeIndex = index - (k * directionMultipliers[orientation]);
+                safeIdx = ((safeIndex < 10 ? '0' : '') + safeIndex).split('');
+                mark.push(safeIndex);
 
-                if (safe_idx[orientation] > 0) {
-                    mark.push(safe_index - direction_multipliers[Number(!orientation)]);
+                if (safeIdx[orientation] > 0) {
+                    mark.push(safeIndex - directionMultipliers[Number(!orientation)]);
                 }
-                if (safe_idx[orientation] < 9) {
-                    mark.push(safe_index + direction_multipliers[Number(!orientation)]);
+                if (safeIdx[orientation] < 9) {
+                    mark.push(safeIndex + directionMultipliers[Number(!orientation)]);
                 }
             }
 
             return mark;
         }).toArray();
 
-        $board.removeClass("restricted");
+        $board.removeClass('restricted');
 
-        for (var i = 0; i < marks.length; i++) {
-            $board.eq(marks[i]).addClass("restricted");
+        for (i = 0; i < marks.length; i++) {
+            $board.eq(marks[i]).addClass('restricted');
         }
 
-        if (orientation == 0) {
-            $board.filter('div:nth-child(n+' + (13 - masts) + ')').addClass("restricted");
+        if (orientation === 0) {
+            $board.filter('div:nth-child(n+' + (13 - masts) + ')').addClass('restricted');
         } else {
-            $board.slice((11 - masts) * 10).addClass("restricted");
+            $board.slice((11 - masts) * 10).addClass('restricted');
         }
     }
 
-    function custom_log(log) {
+    function customLog(log) {
         if (debug !== true) {
             return true;
         }
