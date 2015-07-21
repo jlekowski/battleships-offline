@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Battleships</title>
+<style>
+body {
+    font: 14px Verdana;
+}
+
+/* CSS for menu */
+div.menu {
+    padding: 3px;
+    margin-bottom: 10px;
+}
+
+
+/* CSS for board layout */
+div.board_container, div.board, div.board div {
+    float: left;
+}
+
+div.board_container {
+    margin-right: 30px;
+}
+
+div.board_menu {
+    text-align: center;
+    padding: 0 0 10px 15px;
+}
+
+div.board_menu span {
+    border: 1px solid;
+    padding: 1px 20px;
+    display: block;
+}
+
+div.board_menu span.turn {
+    background-color: #fcb;
+}
+
+div.board_menu input {
+    display: none;
+    font: inherit;
+    text-align: center;
+    border-width: 1px 0;
+    border-style: dotted;
+    padding: 1px 0;
+    margin: 0;
+    background-color: #ff0;
+    width: 100%;
+}
+
+div.board div div {
+    float: none;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    width: 30px;
+    height: 30px;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+/*div.board:first-of-type div div {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+div.board:nth-of-type(1) div div {
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}*/
+
+div.board div:first-child div {
+    border-bottom-color: transparent;
+    width: 15px;
+}
+
+div.board div div:first-child {
+    border-right-color: transparent;
+    height: 20px;
+    text-align: center;
+}
+
+
+/* CSS for board cells */
+div.board div.ship {
+    background-color: #00f;
+}
+
+div.hide_ships div.ship {
+    background-color: inherit;
+}
+
+div.board div.miss {
+    background-color: #f00;
+}
+
+div.board div.hit {
+    background-color: #88f;
+}
+
+
+/* Random shot button only when game started */
+#random_shot {
+    display: none;
+}
+</style>
+</head>
+<body>
+<div class="menu">
+    <button id="start">Start</button>
+    <button id="new_game">New Game</button>
+    <button id="random_ships">Random Ships</button>
+    <button id="random_shot">Random Shot</button>
+</div>
+<div class="board_container">
+    <div class="board_menu">
+        <input type="text" value="Player 1">
+        <span class="player_name name_update turn">Player 1</span>
+    </div>
+    <div class="board">
+        <div>
+            <div></div>
+            <div>A</div>
+            <div>B</div>
+            <div>C</div>
+            <div>D</div>
+            <div>E</div>
+            <div>F</div>
+            <div>G</div>
+            <div>H</div>
+            <div>I</div>
+            <div>J</div>
+        </div>
+        <div>
+            <div>1</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>2</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>3</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>4</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>5</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>6</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>7</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>8</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>9</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>10</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+<div class="board_container">
+    <div class="board_menu">
+        <input type="text" value="Player 2">
+        <span class="other_name name_update">Player 2</span>
+    </div>
+    <div class="board">
+        <div>
+            <div></div>
+            <div>A</div>
+            <div>B</div>
+            <div>C</div>
+            <div>D</div>
+            <div>E</div>
+            <div>F</div>
+            <div>G</div>
+            <div>H</div>
+            <div>I</div>
+            <div>J</div>
+        </div>
+        <div>
+            <div>1</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>2</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>3</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>4</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>5</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>6</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>7</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>8</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>9</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div>
+            <div>10</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+var BattleshipsClass = function() {
+    // log events managements
+    var debug = true;
+    // battle boards axis Y legend
+    var axis_y = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+    // battle boards axis X legend
+    var axis_x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    // whether the game has started
+    var game_started = false;
+    // whether the game has ended
+    var game_ended = false;
+    // whether player started the game
+    var player_started = false;
+    // which player's turn is now
+    var whose_turn = 0;
+    // battle boards
+    var $battleground = null;
+    // my sister must always win :)
+    var zosiekMode = false;
+
+    this.run = function () {
+        $battleground = $("div:gt(0) div:not(:first-child)", "div.board");
+        $battleground.board = function(index) {
+            return index === 0 ? $battleground.slice(0, 100) : $battleground.slice(100);
+        };
+
+        // board handling
+        $battleground.on('click', battlegroundClickCallback);
+
+        // starting the game
+        $("#start").on('click', startClickCallback);
+
+        // updating player's name
+        $(".name_update")
+            .on('click', nameUpdateClickCallback)
+            .siblings(":text")
+                .on({keyup: nameUpdateTextKeyupCallback, blur: nameUpdateTextBlurCallback});
+
+        // starts new game
+        $("#new_game").on('click', newGameClickCallback);
+
+        // shoot randomly
+        $("#random_shot").on('click', random_shot);
+
+        // set ships randomly
+        $("#random_ships").on('click', {retry: 2}, random_ships);
+    };
+
+    function battlegroundClickCallback() {
+        // shoot
+        if (game_started) {
+            // either player and other board or the opposite
+            if (!!whose_turn === ($battleground.index(this) >= 100)) {
+                alert("It's other player's turn");
+                return false;
+            }
+            shot(this);
+        // either started and other board or not started and player board
+        } else if (player_started === ($battleground.index(this) >= 100)) {
+            $(this).toggleClass("ship");
+        }
+    }
+
+    function startClickCallback() {
+        if (game_started) {
+            alert("You have already started the game");
+            return false;
+        }
+
+        var $ships = $battleground.board(whose_turn).filter(".ship");
+
+        if (check_ships($ships) == false) {
+            alert("There is either not enough ships or they're set incorrectly");
+            return false;
+        }
+
+        var shipsArray = $ships.map(function() {
+            return get_coords(this);
+        }).toArray();
+
+        custom_log({ships: shipsArray});
+        start_game();
+    }
+
+    function nameUpdateClickCallback() {
+        $(this).hide().siblings(":text").show().select();
+    }
+
+    function nameUpdateTextKeyupCallback(event) {
+        // if pressed ESC - leave the input, if ENTER - process, if other - do nothing
+        if (event.which != 13) {
+            if (event.which == 27) {
+                $(this).blur();
+            }
+
+            return true;
+        }
+
+        var $input   = $(this);
+        var new_name = $input.val();
+        custom_log({name: new_name});
+
+        if (new_name === 'Zosiek') {
+            zosiekMode = true;
+            custom_log('Zosiek mode enabled :)');
+        }
+
+        $nameElement = $input.hide().siblings("span");
+        var nameClassSelector = $nameElement.hasClass("player_name") ? ".player_name" : ".other_name";
+        $(nameClassSelector).text(new_name);
+        $nameElement.show();
+    }
+
+    function nameUpdateTextBlurCallback() {
+        if ($(this).has(":visible")) {
+            var new_name = $(this).siblings("span").text();
+
+            $(this).hide().val(new_name).siblings("span").show();
+        }
+    }
+
+    function newGameClickCallback() {
+        if (game_ended || confirm("Are you sure you want to quit the current game?")) {
+            $battleground.removeClass();
+            game_started = false;
+            game_ended = false;
+            player_started = false;
+
+            set_turn(true);
+
+            $("#start").prop('disabled', false);
+            $("#random_shot").hide();
+            $("#random_ships").show();
+            $("div.board").removeClass('hide_ships');
+        }
+    }
+
+    function shot(element) {
+        if (!game_started) {
+            alert("You can't shoot at the moment - game is not started");
+            return false;
+        }
+
+        if ($(element).is(".miss, .hit")) {
+            custom_log("You either already shot this field, or no ship could be there");
+            return;
+        }
+
+        var coords = get_coords(element);
+        custom_log({shot: coords});
+
+        var shotResult = mark_shot((whose_turn === 0 ? 1 : 0), coords);
+        custom_log(shotResult);
+
+        if (shotResult == "miss") {
+            set_turn(whose_turn === 1);
+        }
+
+        if (shotResult == "sunk") {
+            check_game_end();
+        }
+    }
+
+    function get_coords(element) {
+        var index = $battleground.index(element);
+
+        // to convert: 1 -> [0,1], 12 -> [1,2], 167 -> [6,7]
+        var temp    = (index >= 100) ? (index - 100) : index;
+            temp    = (temp < 10 ? "0" : "") + temp;
+        var indexes = temp.split("");
+
+        var cord_y = axis_y[ indexes[1] ];
+        var cord_x = axis_x[ indexes[0] ];
+
+        return cord_y + cord_x;
+    }
+
+    function get_field_by_coords(coords, board_number) {
+        if ($.type(coords) != "array") {
+            coords = [coords.substr(0, 1), parseInt(coords.substr(1))];
+        }
+        var position_y = $.inArray(coords[0], axis_y);
+        var position_x = $.inArray(coords[1], axis_x);
+
+        // parseInt("08") -> 0
+        var position = parseInt([position_x, position_y].join(''), 10) + (board_number * 100);
+
+        return $battleground.eq(position);
+    }
+
+    function mark_shot(board_number, coords, type, tendency) {
+        if ($.type(coords) != "array") {
+            coords = [coords.substr(0, 1), parseInt(coords.substr(1))];
+        }
+        var field         = get_field_by_coords(coords, board_number);
+        var position_y    = $.inArray(coords[0], axis_y);
+        var position_x    = $.inArray(coords[1], axis_x);
+        var mark_class    = '';
+        var missed_coords = [];
+
+        if (type == null) {
+            if (field.hasClass("ship")) {
+                type = is_sunk(board_number, coords) ? "sunk" : "hit";
+            } else {
+                type = "miss";
+            }
+        }
+
+
+        if (type == "miss") {
+            mark_class = "miss";
+            missed_coords.push(coords);
+        }
+
+        if (type == "hit" || type == "sunk") {
+            mark_class = "hit";
+            missed_coords.push( (position_y > 0 && position_x > 0) ? [axis_y[ position_y - 1 ], axis_x[ position_x - 1 ]] : [] );
+            missed_coords.push( (position_y > 0 && position_x < 9) ? [axis_y[ position_y - 1 ], axis_x[ position_x + 1 ]] : [] );
+            missed_coords.push( (position_y < 9 && position_x < 9) ? [axis_y[ position_y + 1 ], axis_x[ position_x + 1 ]] : [] );
+            missed_coords.push( (position_y < 9 && position_x > 0) ? [axis_y[ position_y + 1 ], axis_x[ position_x - 1 ]] : [] );
+        }
+
+        if (type == "sunk") {
+            missed_coords.push( (position_y > 0)                   ? [axis_y[ position_y - 1 ], coords[1]]                : [] );
+            missed_coords.push( (position_y < 9)                   ? [axis_y[ position_y + 1 ], coords[1]]                : [] );
+            missed_coords.push( (position_x < 9)                   ? [coords[0], axis_x[ position_x + 1 ]]                : [] );
+            missed_coords.push( (position_x > 0)                   ? [coords[0], axis_x[ position_x - 1 ]]                : [] );
+        }
+
+
+        for (var i = 0; i < missed_coords.length; i++) {
+            if (missed_coords[i].length == 0 || (tendency != null && tendency != i)) {
+                continue;
+            }
+
+            var temp_field = get_field_by_coords(missed_coords[i], board_number);
+
+            if (temp_field.hasClass("hit") && type == "sunk") {
+                mark_shot(board_number, missed_coords[i], type, i);
+            } else {
+                temp_field.addClass("miss");
+            }
+        }
+
+
+        if (tendency == null) {
+            field.addClass(mark_class);
+        }
+
+        return type;
+    }
+
+    function is_sunk(board_number, coords, tendency) {
+        if ($.type(coords) != "array") {
+            coords = [coords.substr(0, 1), parseInt(coords.substr(1))];
+        }
+        var position_y    = $.inArray(coords[0], axis_y);
+        var position_x    = $.inArray(coords[1], axis_x);
+        var check_coords  = [];
+
+        check_coords.push( (position_y > 0) ? [axis_y[ position_y - 1 ], coords[1]] : [] );
+        check_coords.push( (position_y < 9) ? [axis_y[ position_y + 1 ], coords[1]] : [] );
+        check_coords.push( (position_x < 9) ? [coords[0], axis_x[ position_x + 1 ]] : [] );
+        check_coords.push( (position_x > 0) ? [coords[0], axis_x[ position_x - 1 ]] : [] );
+
+
+        for (var i = 0; i < check_coords.length; i++) {
+            if (check_coords[i].length == 0 || (tendency != null && tendency != i)) {
+                continue;
+            }
+
+            var temp_field = get_field_by_coords(check_coords[i], board_number);
+
+            if (temp_field.hasClass("hit")) {
+                if (is_sunk(board_number, check_coords[i], i) == false) {
+                    return false;
+                }
+            } else if (temp_field.hasClass("ship")) {
+                return false;
+            }
+        }
+
+
+        return true;
+    }
+
+    /**
+     * @todo maybe only game_started, not player_started?
+     */
+    function start_game() {
+        if (player_started) {
+            game_started = true;
+        } else {
+            player_started = true;
+            $("div.board:first").addClass('hide_ships');
+        }
+
+        if (game_started) {
+            $("#start").prop('disabled', true);
+            $("#random_shot, #random_ships").toggle();
+            $("div.board").addClass('hide_ships');
+        }
+
+        set_turn(game_started);
+    }
+
+    function check_game_end() {
+        if (game_ended) {
+            return game_ended;
+        }
+
+        if ($battleground.board(0).filter(".hit").length >= 20) {
+            alert($(".other_name:first").text() + " won");
+            game_ended = true;
+        } else if ($battleground.board(1).filter(".hit").length >= 20) {
+            alert($(".player_name:first").text() + " won");
+            game_ended = true;
+        }
+
+        return game_ended;
+    }
+
+    /**
+     * @todo real number, not bool
+     * @param {Number} playerNumber
+     */
+    function set_turn(playerNumber) {
+        whose_turn = Number(!playerNumber);
+        $(".board_menu:eq(" + whose_turn + ") span").addClass("turn");
+        $(".board_menu:eq(" + Number(playerNumber) + ") span").removeClass("turn");
+    }
+
+    /**
+     * @todo maybe pass only $board, or don't pass anything? $ships, but $battleground :|
+     */
+    function check_ships($ships) {
+        var ships_array = $ships.map(function() {
+            return $battleground.board(whose_turn).index(this);
+        }).toArray();
+
+        var ships_length = 20;
+        var ships_types  = {1:0, 2:0, 3:0, 4:0};
+        var direction_multipliers = [1, 10];
+        var idx;
+        var i, j, k;
+
+        if (ships_array.length != ships_length) {
+            return false;
+        }
+
+        // check if no edge connection
+        for (i = 0; i < ships_array.length; i++) {
+            idx = ((ships_array[i] < 10 ? "0" : "") + ships_array[i]).split("");
+
+            if (idx[0] == 9) {
+                continue;
+            }
+
+            var upper_right_corner = (idx[1] > 0) && ($.inArray(ships_array[i] + 9, ships_array) != -1);
+            var lower_right_corner = (idx[1] < 9) && ($.inArray(ships_array[i] + 11, ships_array) != -1);
+
+            if (upper_right_corner || lower_right_corner) {
+                return false;
+            }
+        }
+
+        // check if there are the right types of ships
+        for (i = 0; i < ships_array.length; i++) {
+            // we ignore masts which have already been marked as a part of a ship
+            if (ships_array[i] === null) {
+                continue;
+            }
+
+            idx = ((ships_array[i] < 10 ? "0" : "") + ships_array[i]).split("");
+
+            for (j = 0; j < direction_multipliers.length; j++) {
+                var border_index = parseInt(j) == 1 ? 0 : 1;
+                var border_distance = parseInt(idx[border_index]);
+
+                k = 1;
+                // battleground border
+                while (border_distance + k <= 9) {
+                    var index = ships_array[i] + (k * direction_multipliers[j]);
+                    var key = $.inArray(index, ships_array);
+
+                    // no more masts
+                    if (key == -1) {
+                        break;
+                    }
+
+                    ships_array[key] = null;
+
+                    // ship is too long
+                    if (++k > 4) {
+                        return false;
+                    }
+                }
+
+                // if not last direction check and only one (otherwise in both direction at least 1 mast would be found)
+                if ((k == 1) && (j + 1 != direction_multipliers.length)) {
+                    continue;
+                }
+
+                break; // either k > 1 (so ship found) or last loop
+            }
+
+            ships_types[k]++;
+        }
+
+        // strange way to check if ships_types == {1:4, 2:3, 3:2, 4:1}
+        for (i = 0; i < ships_types.length; i++) {
+            if (parseInt(i) + ships_types[i] != 5) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function random_shot() {
+        var $empty_fields = $battleground.board(whose_turn === 0 ? 1 : 0).not(".miss, .hit");
+
+        if (zosiekMode) {
+            var currentPlayerSelector = whose_turn === 0 ? 'player' : 'other';
+            // In this case you always hit :)
+            if ($("." + currentPlayerSelector + "_name:first").text() === 'Zosiek') {
+                $empty_fields = $battleground.board(whose_turn === 0 ? 1 : 0).filter(".ship").not(".hit");
+            }
+        }
+
+        // random from 0 to the amount of empty fields - 1 (because first's index is 0)
+        var index = Math.floor(Math.random() * $empty_fields.length);
+        $empty_fields.eq(index).trigger('click');
+    }
+
+    function random_ships(event) {
+        if (game_started) {
+            alert("You can't set ships - the game has already started");
+            return false;
+        }
+
+        var orientations = [0, 1]; // 0 - vertical, 1 - horizontal
+        var direction_multipliers = [1, 10];
+        var ships_types = {1:4, 2:3, 3:2, 4:1};
+        var $board = $battleground.board(whose_turn);
+
+        $board.filter(".ship").click();
+        for (var number_of_ships in ships_types) {
+            var masts = ships_types[number_of_ships];
+
+            for (var j = 0; j < number_of_ships; j++) {
+                var orientation = orientations[ Math.floor(Math.random() * orientations.length) ];
+                mark_restricted_starts($board, masts, orientation);
+                var $startFields = $board.not(".restricted");
+
+                var index = Math.floor(Math.random() * $startFields.length);
+                var idx = $board.index( $startFields.eq(index) );
+                for (var k = 0; k < masts; k++) {
+                    $board.eq(idx + k * direction_multipliers[orientation]).click();
+                }
+            }
+        }
+
+        if (check_ships($board.filter(".ship")) == false) {
+            if (event.data && event.data.retry > 0) {
+                $board.removeClass("ship");
+                event.data.retry--;
+
+                return random_ships(event);
+            }
+
+            return false;
+        }
+
+        $board.removeClass("restricted");
+
+        return true;
+    }
+
+    function mark_restricted_starts($board, masts, orientation) {
+        var direction_multipliers = [1, 10];
+
+        var marks = $board.filter(".ship").map(function() {
+            var index = $board.index(this);
+            var idx = ((index < 10 ? "0" : "") + index).split("");
+            var border_distance = parseInt(idx[Number(!orientation)]);
+
+            var mark = [index];
+
+            if (idx[0] < 9) {
+                mark.push(index + 10);
+                if (idx[1] < 9) {
+                    mark.push(index + 11);
+                }
+                if (idx[1] > 0) {
+                    mark.push(index + 9);
+                }
+            }
+
+            if (idx[0] > 0) {
+                mark.push(index - 10);
+                if (idx[1] < 9) {
+                    mark.push(index - 9);
+                }
+                if (idx[1] > 0) {
+                    mark.push(index - 11);
+                }
+            }
+
+            if (idx[1] < 9) {
+                mark.push(index + 1);
+            }
+
+            if (idx[1] > 0) {
+                mark.push(index - 1);
+            }
+
+            for (var k = 2; (border_distance - k >= 0) && (k <= masts); k++) {
+                var safe_index = index - (k * direction_multipliers[orientation]);
+                var safe_idx = ((safe_index < 10 ? "0" : "") + safe_index).split("");
+                mark.push(safe_index);
+
+                if (safe_idx[orientation] > 0) {
+                    mark.push(safe_index - direction_multipliers[Number(!orientation)]);
+                }
+                if (safe_idx[orientation] < 9) {
+                    mark.push(safe_index + direction_multipliers[Number(!orientation)]);
+                }
+            }
+
+            return mark;
+        }).toArray();
+
+        $board.removeClass("restricted");
+
+        for (var i = 0; i < marks.length; i++) {
+            $board.eq(marks[i]).addClass("restricted");
+        }
+
+        if (orientation == 0) {
+            $board.filter('div:nth-child(n+' + (13 - masts) + ')').addClass("restricted");
+        } else {
+            $board.slice((11 - masts) * 10).addClass("restricted");
+        }
+    }
+
+    function custom_log(log) {
+        if (debug !== true) {
+            return true;
+        }
+        console.log(log);
+    }
+};
+
+var Battleships = new BattleshipsClass();
+Battleships.run();
+</script>
+</body>
+</html>
