@@ -491,16 +491,12 @@ var BattleshipsClass = function() {
     }
 
     function startClickCallback() {
-        var $ships, shipsArray;
-
         if (gameStarted) {
             alert('You have already started the game');
             return false;
         }
 
-        $ships = $battleground.board(whoseTurn).filter('.ship');
-
-        if (checkShips($ships) === false) {
+        if (checkShips($battleground.board(whoseTurn)) === false) {
             alert('There is either not enough ships or they\'re set incorrectly');
             return false;
         }
@@ -760,9 +756,10 @@ var BattleshipsClass = function() {
     }
 
     /**
-     * @todo maybe pass only $board, or don't pass anything? $ships, but $battleground :|
+     * @param {Object} $board
+     * @return {Boolean}
      */
-    function checkShips($ships) {
+    function checkShips($board) {
         var shipsArray,
             shipsLength = 20,
             shipsTypes = {1:0, 2:0, 3:0, 4:0},
@@ -776,8 +773,8 @@ var BattleshipsClass = function() {
             idx,
             i, j, k;
 
-        shipsArray = $ships.map(function() {
-            return $battleground.board(whoseTurn).index(this);
+        shipsArray = $board.filter('.ship').map(function() {
+            return $board.index(this);
         }).toArray();
 
         if (shipsArray.length !== shipsLength) {
@@ -905,7 +902,7 @@ var BattleshipsClass = function() {
             }
         }
 
-        if (checkShips($board.filter('.ship')) === false) {
+        if (checkShips($board) === false) {
             if (event.data && event.data.retry > 0) {
                 $board.removeClass('ship');
                 event.data.retry--;
