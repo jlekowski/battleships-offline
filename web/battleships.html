@@ -551,7 +551,7 @@ var BattleshipsClass = function() {
             gameEnded = false;
             playerStarted = false;
 
-            setTurn(true);
+            setTurn(0);
 
             $('#start').prop('disabled', false);
             $('#random_shot').hide();
@@ -576,11 +576,11 @@ var BattleshipsClass = function() {
         coords = getCoords(element);
         customLog({shot: coords});
 
-        shotResult = markShot((whoseTurn === 0 ? 1 : 0), coords);
+        shotResult = markShot(getWaitingPlayerNumber(), coords);
         customLog(shotResult);
 
         if (shotResult === 'miss') {
-            setTurn(whoseTurn === 1);
+            setTurn(getWaitingPlayerNumber());
         }
 
         if (shotResult === 'sunk') {
@@ -594,12 +594,9 @@ var BattleshipsClass = function() {
      */
     function getCoords(element) {
         var index = $battleground.index(element),
-            indexes, coordY, coordX, temp;
+            indexes, coordY, coordX;
 
-        // to convert: 1 -> [0,1], 12 -> [1,2], 167 -> [6,7]
-        temp = (index >= 100) ? (index - 100) : index;
-        temp = (temp < 10 ? '0' : '') + temp;
-        indexes = temp.split('');
+        indexes = indexToArray(index);
 
         coordY = axisY[ indexes[1] ];
         coordX = axisX[ indexes[0] ];
@@ -724,9 +721,8 @@ var BattleshipsClass = function() {
             $('#start').prop('disabled', true);
             $('#random_shot, #random_ships').toggle();
             $('div.board').addClass('hide_ships');
+            setTurn(0);
         }
-
-        setTurn(gameStarted);
     }
 
     function checkGameEnd() {
@@ -746,13 +742,19 @@ var BattleshipsClass = function() {
     }
 
     /**
-     * @todo real number, not bool
      * @param {Number} playerNumber
      */
     function setTurn(playerNumber) {
-        whoseTurn = Number(!playerNumber);
+        whoseTurn = playerNumber;
         $('.board_menu:eq(' + whoseTurn + ') span').addClass('turn');
-        $('.board_menu:eq(' + Number(playerNumber) + ') span').removeClass('turn');
+        $('.board_menu:eq(' + getWaitingPlayerNumber() + ') span').removeClass('turn');
+    }
+
+    /**
+     * @todo Rename function
+     */
+    function getWaitingPlayerNumber() {
+        return whoseTurn === 0 ? 1 : 0;
     }
 
     /**
@@ -783,7 +785,7 @@ var BattleshipsClass = function() {
 
         // check if no edge connection
         for (i = 0; i < shipsArray.length; i++) {
-            idx = ((shipsArray[i] < 10 ? '0' : '') + shipsArray[i]).split('');
+            idx = indexToArray(shipsArray[i]);
 
             if (idx[0] === 9) {
                 continue;
@@ -804,7 +806,7 @@ var BattleshipsClass = function() {
                 continue;
             }
 
-            idx = ((shipsArray[i] < 10 ? '0' : '') + shipsArray[i]).split('');
+            idx = indexToArray(shipsArray[i]);
 
             for (j = 0; j < directionMultipliers.length; j++) {
                 borderIndex = parseInt(j) === 1 ? 0 : 1;
@@ -851,14 +853,14 @@ var BattleshipsClass = function() {
     }
 
     function randomShot() {
-        var $emptyFields = $battleground.board(whoseTurn === 0 ? 1 : 0).not('.miss, .hit'),
+        var $emptyFields = $battleground.board(getWaitingPlayerNumber()).not('.miss, .hit'),
             index, currentPlayerSelector;
 
         if (zosiekMode) {
             currentPlayerSelector = whoseTurn === 0 ? 'player' : 'other';
             // In this case you always hit :)
             if ($('.' + currentPlayerSelector + '_name:first').text() === 'Zosiek') {
-                $emptyFields = $battleground.board(whoseTurn === 0 ? 1 : 0).filter('.ship').not('.hit');
+                $emptyFields = $battleground.board(getWaitingPlayerNumber()).filter('.ship').not('.hit');
             }
         }
 
@@ -870,7 +872,7 @@ var BattleshipsClass = function() {
     function randomShips(event) {
         var orientations = [0, 1], // 0 - vertical, 1 - horizontal
             directionMultipliers = [1, 10],
-            shipsTypes = {1:4, 2:3, 3:2, 4:1}, // @DRY
+            shipsTypes = {1:4, 2:3, 3:2, 4:1},
             $board = $battleground.board(whoseTurn),
             numberOfShips,
             masts,
@@ -925,7 +927,7 @@ var BattleshipsClass = function() {
 
         marks = $board.filter('.ship').map(function() {
             var index = $board.index(this),
-                idx = ((index < 10 ? '0' : '') + index).split(''), // @DRY
+                idx = indexToArray(index),
                 borderDistance = parseInt(idx[Number(!orientation)]),
                 mark = [index],
                 safeIndex,
@@ -962,7 +964,7 @@ var BattleshipsClass = function() {
 
             for (k = 2; (borderDistance - k >= 0) && (k <= masts); k++) {
                 safeIndex = index - (k * directionMultipliers[orientation]);
-                safeIdx = ((safeIndex < 10 ? '0' : '') + safeIndex).split('');
+                safeIdx = indexToArray(safeIndex);
                 mark.push(safeIndex);
 
                 if (safeIdx[orientation] > 0) {
@@ -987,6 +989,19 @@ var BattleshipsClass = function() {
         } else {
             $board.slice((11 - masts) * 10).addClass('restricted');
         }
+    }
+
+    /**
+     * Convert: 1 -> [0,1], 12 -> [1,2], 167 -> [6,7]
+     * @param {Number} index
+     * @return Array
+     */
+    function indexToArray(index) {
+        if (index >= 100) {
+            index = index - 100;
+        }
+
+        return ((index < 10 ? '0' : '') + index).split('');
     }
 
     function customLog(log) {
