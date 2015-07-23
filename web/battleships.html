@@ -608,9 +608,9 @@ var BattleshipsClass = function() {
         var positionY = $.inArray(coords[0], axisY),
             positionX = $.inArray(coords[1], axisX),
             // parseInt('08') -> 0
-            position = parseInt([positionX, positionY].join(''), 10) + (boardNumber * 100);
+            position = parseInt([positionX, positionY].join(''), 10);
 
-        return $battleground.eq(position);
+        return $battleground.board(boardNumber).eq(position);
     }
 
     function markShot(boardNumber, coords, type, tendency) {
@@ -622,7 +622,7 @@ var BattleshipsClass = function() {
             tempField,
             i;
 
-        if (type === null) {
+        if (type === undefined) {
             if (field.hasClass('ship')) {
                 type = isSunk(boardNumber, coords) ? 'sunk' : 'hit';
             } else {
@@ -653,7 +653,7 @@ var BattleshipsClass = function() {
 
 
         for (i = 0; i < missedCoords.length; i++) {
-            if (missedCoords[i].length === 0 || (tendency !== null && tendency !== i)) {
+            if (missedCoords[i].length === 0 || (tendency !== undefined && tendency !== i)) {
                 continue;
             }
 
@@ -667,7 +667,7 @@ var BattleshipsClass = function() {
         }
 
 
-        if (tendency === null) {
+        if (tendency === undefined) {
             field.addClass(markClass);
         }
 
@@ -688,7 +688,7 @@ var BattleshipsClass = function() {
 
         // @DRY - same as in mark_shot
         for (i = 0; i < checkCoords.length; i++) {
-            if (checkCoords[i].length === 0 || (tendency !== null && tendency !== i)) {
+            if (checkCoords[i].length === 0 || (tendency !== undefined && tendency !== i)) {
                 continue;
             }
 
@@ -712,17 +712,14 @@ var BattleshipsClass = function() {
     function startGame() {
         if (playerStarted) {
             gameStarted = true;
-        } else {
-            playerStarted = true;
-            $('div.board:first').addClass('hide_ships');
-        }
-
-        if (gameStarted) {
             $('#start').prop('disabled', true);
             $('#random_shot, #random_ships').toggle();
-            $('div.board').addClass('hide_ships');
-            setTurn(0);
+        } else {
+            playerStarted = true;
         }
+
+        $('div.board').eq(whoseTurn).addClass('hide_ships');
+        setTurn(getWaitingPlayerNumber());
     }
 
     function checkGameEnd() {
