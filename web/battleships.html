@@ -447,7 +447,7 @@ var BattleshipsClass = function() {
     // my sister must always win :)
         zosiekMode = false;
 
-    this.run = function () {
+    this.run = function() {
         $battleground = $('div:gt(0) div:not(:first-child)', 'div.board');
         $battleground.board = function(index) {
             return index === 0 ? $battleground.slice(0, 100) : $battleground.slice(100);
@@ -476,17 +476,18 @@ var BattleshipsClass = function() {
     };
 
     function battlegroundClickCallback() {
+        var $field = $(this);
         // shoot
         if (gameStarted) {
             // either player and other board or the opposite
-            if (!!whoseTurn === ($battleground.index(this) >= 100)) {
+            if (!!whoseTurn === ($battleground.index($field) >= 100)) {
                 alert('It\'s other player\'s turn');
                 return false;
             }
-            shot(this);
+            shot($field);
         // either started and other board or not started and player board
-        } else if (playerStarted === ($battleground.index(this) >= 100)) {
-            $(this).toggleClass('ship');
+        } else if (playerStarted === ($battleground.index($field) >= 100)) {
+            $field.toggleClass('ship');
         }
     }
 
@@ -560,24 +561,28 @@ var BattleshipsClass = function() {
         }
     }
 
-    function shot(element) {
-        var coords, shotResult;
+    function shot($field) {
+        var position,
+            shotResult;
 
         if (!gameStarted) {
             alert('You can\'t shoot at the moment - game is not started');
             return false;
         }
 
-        if ($(element).is('.miss, .hit')) {
+        if ($field.is('.miss, .hit')) {
             customLog('You either already shot this field, or no ship could be there');
             return;
         }
 
-        coords = getCoords(element);
-        customLog({shot: coords});
-
-        shotResult = markShot(getWaitingPlayerNumber(), coords);
+        position = new PositionClass(getPosition($field), getWaitingPlayerNumber());
+        shotResult = $field.hasClass('ship')
+            ? (isSunk(position) ? 'sunk' : 'hit')
+            : 'miss';
+        customLog({shot: getCoords($field)});
         customLog(shotResult);
+
+        markShot(position, shotResult);
 
         if (shotResult === 'miss') {
             setTurn(getWaitingPlayerNumber());
@@ -604,98 +609,77 @@ var BattleshipsClass = function() {
         return [coordY, coordX];
     }
 
-    function getFieldByCoords(coords, boardNumber) {
-        var position = getPosition(coords),
-            // parseInt('08') -> 0
-            index = parseInt(position.join(''), 10);
-
-        return $battleground.board(boardNumber).eq(index);
-    }
-
-    function markShot(boardNumber, coords, type, tendency) {
-        var field = getFieldByCoords(coords, boardNumber),
-            position = getPosition(coords),
-            markClass = '',
-            missedCoords = [],
-            tempField,
+    /**
+     * @param {PositionClass} position
+     * @param {string} shotResult
+     * @param {Number} [direction]
+     */
+    function markShot(position, shotResult, direction) {
+        var markClass = '',
+            missedPositions = [],
+            $closeField,
             i;
 
-        if (type === undefined) {
-            if (field.hasClass('ship')) {
-                type = isSunk(boardNumber, coords) ? 'sunk' : 'hit';
-            } else {
-                type = 'miss';
-            }
+        switch (shotResult) {
+            case 'miss':
+                markClass = 'miss';
+                missedPositions.push(position);
+                break;
+
+            case 'hit':
+                markClass = 'hit';
+                missedPositions = position.getCornerPositions();
+                break;
+
+            case 'sunk':
+                markClass = 'hit';
+                missedPositions = position.getSurroundingPositions();
+                break;
         }
 
-
-        if (type === 'miss') {
-            markClass = 'miss';
-            missedCoords.push(coords);
-        }
-
-        if (type === 'hit' || type === 'sunk') {
-            markClass = 'hit';
-            missedCoords.push( (position[0] > 0 && position[1] > 0) ? [axisY[ position[0] - 1 ], axisX[ position[1] - 1 ]] : [] );
-            missedCoords.push( (position[0] > 0 && position[1] < 9) ? [axisY[ position[0] - 1 ], axisX[ position[1] + 1 ]] : [] );
-            missedCoords.push( (position[0] < 9 && position[1] < 9) ? [axisY[ position[0] + 1 ], axisX[ position[1] + 1 ]] : [] );
-            missedCoords.push( (position[0] < 9 && position[1] > 0) ? [axisY[ position[0] + 1 ], axisX[ position[1] - 1 ]] : [] );
-        }
-
-        if (type === 'sunk') {
-            missedCoords.push( (position[0] > 0)                    ? [axisY[ position[0] - 1 ], coords[1]]                : [] );
-            missedCoords.push( (position[0] < 9)                    ? [axisY[ position[0] + 1 ], coords[1]]                : [] );
-            missedCoords.push( (position[1] < 9)                    ? [coords[0], axisX[ position[1] + 1 ]]                : [] );
-            missedCoords.push( (position[1] > 0)                    ? [coords[0], axisX[ position[1] - 1 ]]                : [] );
-        }
-
-
-        for (i = 0; i < missedCoords.length; i++) {
-            if (missedCoords[i].length === 0 || (tendency !== undefined && tendency !== i)) {
+        for (i = 0; i < missedPositions.length; i++) {
+            var missedPosition = missedPositions[i];
+            if (missedPosition === null || (direction !== undefined && direction !== i)) {
                 continue;
             }
 
-            tempField = getFieldByCoords(missedCoords[i], boardNumber);
-
-            if (tempField.hasClass('hit') && type === 'sunk') {
-                markShot(boardNumber, missedCoords[i], type, i);
+            $closeField = missedPosition.getField();
+            if ($closeField.hasClass('hit') && shotResult === 'sunk') {
+                markShot(missedPosition, shotResult, i);
             } else {
-                tempField.addClass('miss');
+                $closeField.addClass('miss');
             }
         }
 
-
-        if (tendency === undefined) {
-            field.addClass(markClass);
+        if (direction === undefined) {
+            position.getField().addClass(markClass);
         }
-
-        return type;
     }
 
-    function isSunk(boardNumber, coords, tendency) {
-        var position = getPosition(coords),
-            checkCoords = [],
-            tempField,
+    /**
+     * @param {PositionClass} position
+     * @param {Number} [direction]
+     * @return {Boolean}
+     */
+    function isSunk(position, direction) {
+        var sidePositions = position.getSidePositions(),
+            sidePosition,
+            $sideField,
             i;
-
-        checkCoords.push( (position[0] > 0) ? [axisY[ position[0] - 1 ], coords[1]] : [] );
-        checkCoords.push( (position[0] < 9) ? [axisY[ position[0] + 1 ], coords[1]] : [] );
-        checkCoords.push( (position[1] < 9) ? [coords[0], axisX[ position[1] + 1 ]] : [] );
-        checkCoords.push( (position[1] > 0) ? [coords[0], axisX[ position[1] - 1 ]] : [] );
 
         // @DRY - same as in mark_shot
-        for (i = 0; i < checkCoords.length; i++) {
-            if (checkCoords[i].length === 0 || (tendency !== undefined && tendency !== i)) {
+        for (i = 0; i < sidePositions.length; i++) {
+            sidePosition = sidePositions[i];
+            if (sidePosition === null || (direction !== undefined && direction !== i)) {
                 continue;
             }
 
-            tempField = getFieldByCoords(checkCoords[i], boardNumber);
-
-            if (tempField.hasClass('hit')) {
-                if (isSunk(boardNumber, checkCoords[i], i) === false) {
+            $sideField = sidePosition.getField();
+            if ($sideField.hasClass('hit')) {
+                if (isSunk(sidePosition, i) === false) {
                     return false;
                 }
-            } else if (tempField.hasClass('ship')) {
+            } else if ($sideField.hasClass('ship')) {
                 return false;
             }
         }
@@ -760,8 +744,8 @@ var BattleshipsClass = function() {
             shipsLength = 20,
             shipsTypes = {1:0, 2:0, 3:0, 4:0},
             directionMultipliers = [1, 10],
-            upperRightCorner,
-            lowerRightCorner,
+            topRightCorner,
+            bottomRightCorner,
             borderIndex,
             borderDistance,
             index,
@@ -785,10 +769,10 @@ var BattleshipsClass = function() {
                 continue;
             }
 
-            upperRightCorner = (idx[1] > 0) && ($.inArray(shipsArray[i] + 9, shipsArray) !== -1);
-            lowerRightCorner = (idx[1] < 9) && ($.inArray(shipsArray[i] + 11, shipsArray) !== -1);
+            topRightCorner = (idx[1] > 0) && ($.inArray(shipsArray[i] + 9, shipsArray) !== -1);
+            bottomRightCorner = (idx[1] < 9) && ($.inArray(shipsArray[i] + 11, shipsArray) !== -1);
 
-            if (upperRightCorner || lowerRightCorner) {
+            if (topRightCorner || bottomRightCorner) {
                 return false;
             }
         }
@@ -837,7 +821,7 @@ var BattleshipsClass = function() {
         }
 
         // strange way to check if ships_types === {1:4, 2:3, 3:2, 4:1}
-        for (i = 0; i < shipsTypes.length; i++) {
+        for (i in shipsTypes) {
             if (parseInt(i) + shipsTypes[i] !== 5) {
                 return false;
             }
@@ -999,14 +983,14 @@ var BattleshipsClass = function() {
     }
 
     /**
-     * @param {Array} coords
+     * @param {Object} $field
      * @returns {Array}
      */
-    function getPosition(coords) {
-        var positionY = $.inArray(coords[0], axisY),
-            positionX = $.inArray(coords[1], axisX);
+    function getPosition($field) {
+        var index = $battleground.index($field),
+            indexes = indexToArray(index);
 
-        return [positionY, positionX];
+        return [parseInt(indexes[1]), parseInt(indexes[0])];
     }
 
     function customLog(log) {
@@ -1015,6 +999,101 @@ var BattleshipsClass = function() {
         }
         console.log(log);
     }
+
+    /**
+     * @param {Array} position
+     * @param {Number} boardNumber
+     * @constructor
+     */
+    var PositionClass = function(position, boardNumber) {
+
+        this.getField = function() {
+            // parseInt('08') -> 0
+            var index = parseInt([position[1], position[0]].join(''), 10);
+
+            return $battleground.board(boardNumber).eq(index);
+        };
+
+        this.getPositionY = function() {
+            return position[0];
+        };
+
+        this.getPositionX = function() {
+            return position[1];
+        };
+
+        this.getLeftPosition = function() {
+            return position[1] > 0 ? new PositionClass([position[0], position[1] - 1], boardNumber) : null;
+        };
+
+        this.getRighthPosition = function() {
+            return position[1] < 9 ? new PositionClass([position[0], position[1] + 1], boardNumber) : null;
+        };
+
+        this.getTopPosition = function() {
+            return position[0] > 0 ? new PositionClass([position[0] - 1, position[1]], boardNumber) : null;
+        };
+
+        this.getBottomPosition = function() {
+            return position[0] < 9 ? new PositionClass([position[0] + 1, position[1]], boardNumber) : null;
+        };
+
+        this.getLeftTopPosition = function() {
+            return (position[0] > 0 && position[1] > 0) ? new PositionClass([position[0] - 1, position[1] - 1], boardNumber) : null;
+        };
+
+        this.getRightTopPosition = function() {
+            return (position[0] > 0 && position[1] < 9) ? new PositionClass([position[0] - 1, position[1] + 1], boardNumber) : null;
+        };
+
+        this.getLeftBottomPosition = function() {
+            return (position[0] < 9 && position[1] > 0) ? new PositionClass([position[0] + 1, position[1] - 1], boardNumber) : null;
+        };
+
+        this.getRightBottomPosition = function() {
+            return (position[0] < 9 && position[1] < 9) ? new PositionClass([position[0] + 1, position[1] + 1], boardNumber) : null;
+        };
+
+        this.getSurroundingPositions = function() {
+            return removeEmpty([
+                this.getLeftPosition(),
+                this.getRighthPosition(),
+                this.getTopPosition(),
+                this.getBottomPosition(),
+                this.getLeftTopPosition(),
+                this.getRightTopPosition(),
+                this.getLeftBottomPosition(),
+                this.getRightBottomPosition()
+            ]);
+        };
+
+        this.getSidePositions = function() {
+            return removeEmpty([
+                this.getLeftPosition(),
+                this.getRighthPosition(),
+                this.getTopPosition(),
+                this.getBottomPosition()
+            ]);
+        };
+
+        this.getCornerPositions = function() {
+            return removeEmpty([
+                this.getLeftTopPosition(),
+                this.getRightTopPosition(),
+                this.getLeftBottomPosition(),
+                this.getRightBottomPosition()
+            ]);
+        };
+
+        function removeEmpty(fields) {
+            return fields;
+//            return $.map(fields, function(field) {
+//                if (field.lenght > 0) {
+//                    return field;
+//                }
+//            });
+        }
+    };
 };
 
 var Battleships = new BattleshipsClass();
