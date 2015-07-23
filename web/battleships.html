@@ -605,18 +605,16 @@ var BattleshipsClass = function() {
     }
 
     function getFieldByCoords(coords, boardNumber) {
-        var positionY = $.inArray(coords[0], axisY),
-            positionX = $.inArray(coords[1], axisX),
+        var position = getPosition(coords),
             // parseInt('08') -> 0
-            position = parseInt([positionX, positionY].join(''), 10);
+            index = parseInt(position.join(''), 10);
 
-        return $battleground.board(boardNumber).eq(position);
+        return $battleground.board(boardNumber).eq(index);
     }
 
     function markShot(boardNumber, coords, type, tendency) {
         var field = getFieldByCoords(coords, boardNumber),
-            positionY = $.inArray(coords[0], axisY),
-            positionX = $.inArray(coords[1], axisX),
+            position = getPosition(coords),
             markClass = '',
             missedCoords = [],
             tempField,
@@ -638,17 +636,17 @@ var BattleshipsClass = function() {
 
         if (type === 'hit' || type === 'sunk') {
             markClass = 'hit';
-            missedCoords.push( (positionY > 0 && positionX > 0) ? [axisY[ positionY - 1 ], axisX[ positionX - 1 ]] : [] );
-            missedCoords.push( (positionY > 0 && positionX < 9) ? [axisY[ positionY - 1 ], axisX[ positionX + 1 ]] : [] );
-            missedCoords.push( (positionY < 9 && positionX < 9) ? [axisY[ positionY + 1 ], axisX[ positionX + 1 ]] : [] );
-            missedCoords.push( (positionY < 9 && positionX > 0) ? [axisY[ positionY + 1 ], axisX[ positionX - 1 ]] : [] );
+            missedCoords.push( (position[0] > 0 && position[1] > 0) ? [axisY[ position[0] - 1 ], axisX[ position[1] - 1 ]] : [] );
+            missedCoords.push( (position[0] > 0 && position[1] < 9) ? [axisY[ position[0] - 1 ], axisX[ position[1] + 1 ]] : [] );
+            missedCoords.push( (position[0] < 9 && position[1] < 9) ? [axisY[ position[0] + 1 ], axisX[ position[1] + 1 ]] : [] );
+            missedCoords.push( (position[0] < 9 && position[1] > 0) ? [axisY[ position[0] + 1 ], axisX[ position[1] - 1 ]] : [] );
         }
 
         if (type === 'sunk') {
-            missedCoords.push( (positionY > 0)                  ? [axisY[ positionY - 1 ], coords[1]]              : [] );
-            missedCoords.push( (positionY < 9)                  ? [axisY[ positionY + 1 ], coords[1]]              : [] );
-            missedCoords.push( (positionX < 9)                  ? [coords[0], axisX[ positionX + 1 ]]              : [] );
-            missedCoords.push( (positionX > 0)                  ? [coords[0], axisX[ positionX - 1 ]]              : [] );
+            missedCoords.push( (position[0] > 0)                    ? [axisY[ position[0] - 1 ], coords[1]]                : [] );
+            missedCoords.push( (position[0] < 9)                    ? [axisY[ position[0] + 1 ], coords[1]]                : [] );
+            missedCoords.push( (position[1] < 9)                    ? [coords[0], axisX[ position[1] + 1 ]]                : [] );
+            missedCoords.push( (position[1] > 0)                    ? [coords[0], axisX[ position[1] - 1 ]]                : [] );
         }
 
 
@@ -675,16 +673,15 @@ var BattleshipsClass = function() {
     }
 
     function isSunk(boardNumber, coords, tendency) {
-        var positionY = $.inArray(coords[0], axisY),
-            positionX = $.inArray(coords[1], axisX),
+        var position = getPosition(coords),
             checkCoords = [],
             tempField,
             i;
 
-        checkCoords.push( (positionY > 0) ? [axisY[ positionY - 1 ], coords[1]] : [] );
-        checkCoords.push( (positionY < 9) ? [axisY[ positionY + 1 ], coords[1]] : [] );
-        checkCoords.push( (positionX < 9) ? [coords[0], axisX[ positionX + 1 ]] : [] );
-        checkCoords.push( (positionX > 0) ? [coords[0], axisX[ positionX - 1 ]] : [] );
+        checkCoords.push( (position[0] > 0) ? [axisY[ position[0] - 1 ], coords[1]] : [] );
+        checkCoords.push( (position[0] < 9) ? [axisY[ position[0] + 1 ], coords[1]] : [] );
+        checkCoords.push( (position[1] < 9) ? [coords[0], axisX[ position[1] + 1 ]] : [] );
+        checkCoords.push( (position[1] > 0) ? [coords[0], axisX[ position[1] - 1 ]] : [] );
 
         // @DRY - same as in mark_shot
         for (i = 0; i < checkCoords.length; i++) {
@@ -999,6 +996,17 @@ var BattleshipsClass = function() {
         }
 
         return ((index < 10 ? '0' : '') + index).split('');
+    }
+
+    /**
+     * @param {Array} coords
+     * @returns {Array}
+     */
+    function getPosition(coords) {
+        var positionY = $.inArray(coords[0], axisY),
+            positionX = $.inArray(coords[1], axisX);
+
+        return [positionY, positionX];
     }
 
     function customLog(log) {
