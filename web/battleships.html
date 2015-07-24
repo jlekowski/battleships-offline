@@ -705,7 +705,7 @@ var BattleshipsClass = function() {
 
     function checkGameEnd() {
         if (gameEnded) {
-            return gameEnded;
+            return;
         }
 
         if ($battleground.board(0).filter('.hit').length >= 20) {
@@ -715,8 +715,6 @@ var BattleshipsClass = function() {
             alert($('.player_name:first').text() + ' won');
             gameEnded = true;
         }
-
-        return gameEnded;
     }
 
     /**
@@ -758,6 +756,7 @@ var BattleshipsClass = function() {
         }).toArray();
 
         if (shipsArray.length !== shipsLength) {
+            customLog('incorrect number of masts');
             return false;
         }
 
@@ -773,6 +772,7 @@ var BattleshipsClass = function() {
             bottomRightCorner = (idx[1] < 9) && ($.inArray(shipsArray[i] + 11, shipsArray) !== -1);
 
             if (topRightCorner || bottomRightCorner) {
+                customLog('edge connection');
                 return false;
             }
         }
@@ -805,6 +805,7 @@ var BattleshipsClass = function() {
 
                     // ship is too long
                     if (++k > 4) {
+                        customLog('ship is too long');
                         return false;
                     }
                 }
@@ -823,6 +824,7 @@ var BattleshipsClass = function() {
         // strange way to check if ships_types === {1:4, 2:3, 3:2, 4:1}
         for (i in shipsTypes) {
             if (parseInt(i) + shipsTypes[i] !== 5) {
+                customLog('incorrect number of ships of this type', shipsTypes);
                 return false;
             }
         }
@@ -993,11 +995,11 @@ var BattleshipsClass = function() {
         return [parseInt(indexes[1]), parseInt(indexes[0])];
     }
 
-    function customLog(log) {
+    function customLog(log, context) {
         if (debug !== true) {
             return true;
         }
-        console.log(log);
+        console.log(log, context);
     }
 
     /**
