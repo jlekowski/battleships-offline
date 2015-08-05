@@ -13,6 +13,9 @@ http://dev.lekowski.pl/
 
 ## === Changelog ===
 
+* version **1.1**
+ * Code Refactoring and bug fixes
+
 * version **1.0**
  * Working version created of https://github.com/jlekowski/battleships with some modifications
  * Added Zosiek Mode (as my sister doesn't mind to cheat as long as she wins)
