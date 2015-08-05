@@ -502,7 +502,11 @@ var BattleshipsClass = function() {
             return false;
         }
 
-        startGame();
+        if (playerStarted) {
+            startGame();
+        } else {
+            playerStarted = true;
+        }
     }
 
     function nameUpdateClickCallback() {
@@ -575,7 +579,7 @@ var BattleshipsClass = function() {
             return;
         }
 
-        position = new PositionClass(getPosition($field), getWaitingPlayerNumber());
+        position = new PositionClass(getPosition($field), findWaitingPlayer());
         shotResult = $field.hasClass('ship')
             ? (isSunk(position) ? 'sunk' : 'hit')
             : 'miss';
@@ -585,7 +589,7 @@ var BattleshipsClass = function() {
         markShot(position, shotResult);
 
         if (shotResult === 'miss') {
-            setTurn(getWaitingPlayerNumber());
+            setTurn(findWaitingPlayer());
         }
 
         if (shotResult === 'sunk') {
@@ -688,19 +692,15 @@ var BattleshipsClass = function() {
     }
 
     /**
-     * @todo maybe only game_started, not player_started?
+     * Start game
      */
     function startGame() {
-        if (playerStarted) {
-            gameStarted = true;
-            $('#start').prop('disabled', true);
-            $('#random_shot, #random_ships').toggle();
-        } else {
-            playerStarted = true;
-        }
+        gameStarted = true;
+        $('#start').prop('disabled', true);
+        $('#random_shot, #random_ships').toggle();
 
         $('div.board').eq(whoseTurn).addClass('hide_ships');
-        setTurn(getWaitingPlayerNumber());
+        setTurn(findWaitingPlayer());
     }
 
     function checkGameEnd() {
@@ -723,13 +723,13 @@ var BattleshipsClass = function() {
     function setTurn(playerNumber) {
         whoseTurn = playerNumber;
         $('.board_menu:eq(' + whoseTurn + ') span').addClass('turn');
-        $('.board_menu:eq(' + getWaitingPlayerNumber() + ') span').removeClass('turn');
+        $('.board_menu:eq(' + findWaitingPlayer() + ') span').removeClass('turn');
     }
 
     /**
-     * @todo Rename function
+     * @return {Number}
      */
-    function getWaitingPlayerNumber() {
+    function findWaitingPlayer() {
         return whoseTurn === 0 ? 1 : 0;
     }
 
@@ -834,14 +834,14 @@ var BattleshipsClass = function() {
     }
 
     function randomShot() {
-        var $emptyFields = $battleground.board(getWaitingPlayerNumber()).not('.miss, .hit'),
+        var $emptyFields = $battleground.board(findWaitingPlayer()).not('.miss, .hit'),
             index, currentPlayerSelector;
 
         if (zosiekMode) {
             currentPlayerSelector = whoseTurn === 0 ? 'player' : 'other';
             // In this case you always hit :)
             if ($('.' + currentPlayerSelector + '_name:first').text() === 'Zosiek') {
-                $emptyFields = $battleground.board(getWaitingPlayerNumber()).filter('.ship').not('.hit');
+                $emptyFields = $battleground.board(findWaitingPlayer()).filter('.ship').not('.hit');
             }
         }
 
@@ -1059,7 +1059,7 @@ var BattleshipsClass = function() {
         };
 
         this.getSurroundingPositions = function() {
-            return removeEmpty([
+            return [
                 this.getLeftPosition(),
                 this.getRighthPosition(),
                 this.getTopPosition(),
@@ -1068,35 +1068,26 @@ var BattleshipsClass = function() {
                 this.getRightTopPosition(),
                 this.getLeftBottomPosition(),
                 this.getRightBottomPosition()
-            ]);
+            ];
         };
 
         this.getSidePositions = function() {
-            return removeEmpty([
+            return [
                 this.getLeftPosition(),
                 this.getRighthPosition(),
                 this.getTopPosition(),
                 this.getBottomPosition()
-            ]);
+            ];
         };
 
         this.getCornerPositions = function() {
-            return removeEmpty([
+            return [
                 this.getLeftTopPosition(),
                 this.getRightTopPosition(),
                 this.getLeftBottomPosition(),
                 this.getRightBottomPosition()
-            ]);
+            ];
         };
-
-        function removeEmpty(fields) {
-            return fields;
-//            return $.map(fields, function(field) {
-//                if (field.lenght > 0) {
-//                    return field;
-//                }
-//            });
-        }
     };
 };
 
