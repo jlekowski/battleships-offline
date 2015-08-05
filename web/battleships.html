@@ -824,7 +824,8 @@ var BattleshipsClass = function() {
         // strange way to check if ships_types === {1:4, 2:3, 3:2, 4:1}
         for (i in shipsTypes) {
             if (parseInt(i) + shipsTypes[i] !== 5) {
-                customLog('incorrect number of ships of this type', shipsTypes);
+                customLog('incorrect number of ships of this type');
+                customLog(shipsTypes);
                 return false;
             }
         }
@@ -995,11 +996,12 @@ var BattleshipsClass = function() {
         return [parseInt(indexes[1]), parseInt(indexes[0])];
     }
 
-    function customLog(log, context) {
+    function customLog(log) {
         if (debug !== true) {
-            return true;
+            return;
         }
-        console.log(log, context);
+
+        console.log(log);
     }
 
     /**
