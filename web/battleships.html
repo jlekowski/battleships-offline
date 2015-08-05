@@ -503,10 +503,15 @@ var BattleshipsClass = function() {
         }
 
         if (playerStarted) {
-            startGame();
+            gameStarted = true;
+            $('#start').prop('disabled', true);
+            $('#random_shot, #random_ships').toggle();
         } else {
             playerStarted = true;
         }
+
+        $('div.board').eq(whoseTurn).addClass('hide_ships');
+        setTurn(findWaitingPlayer());
     }
 
     function nameUpdateClickCallback() {
@@ -689,18 +694,6 @@ var BattleshipsClass = function() {
         }
 
         return true;
-    }
-
-    /**
-     * Start game
-     */
-    function startGame() {
-        gameStarted = true;
-        $('#start').prop('disabled', true);
-        $('#random_shot, #random_ships').toggle();
-
-        $('div.board').eq(whoseTurn).addClass('hide_ships');
-        setTurn(findWaitingPlayer());
     }
 
     function checkGameEnd() {
