@@ -13,6 +13,9 @@ http://dev.lekowski.pl/
 
 ## === Changelog ===
 
+* version **1.2**
+ * StartGane bug fixed
+
 * version **1.1**
  * Code Refactoring and bug fixes
 
